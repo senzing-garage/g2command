@@ -122,7 +122,7 @@ class G2CmdShell(cmd.Cmd, object):
         exportEntityCsv_parser.add_argument('-t', '--headersForCSV', required=False)
         exportEntityCsv_parser.add_argument('-f', '--flags', required=True, default=0, type=int)
         exportEntityCsv_parser.add_argument('-o', '--outputFile', required=False)
-        
+
         recordModify_parser = self.subparsers.add_parser('recordModify', usage=argparse.SUPPRESS)
         recordModify_parser.add_argument('dataSourceCode')
         recordModify_parser.add_argument('recordID')
