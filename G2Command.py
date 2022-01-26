@@ -14,6 +14,8 @@ from collections import OrderedDict
 from contextlib import suppress
 from timeit import default_timer as timer
 
+# MJD was here
+
 import G2Exception
 import G2Paths
 from G2Config import G2Config
