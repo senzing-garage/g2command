@@ -17,7 +17,7 @@ from timeit import default_timer as timer
 import G2Paths
 from G2Health import G2Health
 
-from senzing import G2Config, G2ConfigMgr, G2Diagnostic, G2Engine, G2Exception, G2Hasher, G2IniParams, G2Product
+from senzing import G2Config, G2ConfigMgr, G2Diagnostic, G2Engine, G2Exception, G2Hasher, G2IniParams, G2ModuleGenericException, G2Product
 
 try:
     import readline
@@ -46,12 +46,12 @@ class G2CmdShell(cmd.Cmd, object):
         self.undoc_header = 'Misc Commands'
         self.__hidden_methods = ('do_shell', 'do_EOF', 'do_help')
 
-        self.g2_module = G2Engine.G2Engine()
-        self.g2_hasher_module = G2Hasher.G2Hasher()
-        self.g2_product_module = G2Product.G2Product()
-        self.g2_diagnostic_module = G2Diagnostic.G2Diagnostic()
-        self.g2_config_module = G2Config.G2Config()
-        self.g2_configmgr_module = G2ConfigMgr.G2ConfigMgr()
+        self.g2_module = G2Engine()
+        self.g2_hasher_module = G2Hasher()
+        self.g2_product_module = G2Product()
+        self.g2_diagnostic_module = G2Diagnostic()
+        self.g2_config_module = G2Config()
+        self.g2_configmgr_module = G2ConfigMgr()
 
         self.initialized = False
         self.restart = False
@@ -701,7 +701,7 @@ class G2CmdShell(cmd.Cmd, object):
             elif args.interfaceName == 'configmgr':
                 self.g2_configmgr_module.clearLastException()
             else:
-                raise G2Exception.G2ModuleGenericException("ERROR: Unknown interface name '" + args.interfaceName + "'")
+                raise G2ModuleGenericException("ERROR: Unknown interface name '" + args.interfaceName + "'")
         except G2Exception as err:
             print(err)
 
@@ -730,7 +730,7 @@ class G2CmdShell(cmd.Cmd, object):
             elif args.interfaceName == 'configmgr':
                 resultString = self.g2_configmgr_module.getLastException()
             else:
-                raise G2Exception.G2ModuleGenericException("ERROR: Unknown interface name '" + args.interfaceName + "'")
+                raise G2ModuleGenericException("ERROR: Unknown interface name '" + args.interfaceName + "'")
             printWithNewLine('Last exception: "%s"' % (resultString))
         except G2Exception as err:
             print(err)
@@ -759,7 +759,7 @@ class G2CmdShell(cmd.Cmd, object):
             elif args.interfaceName == 'configmgr':
                 resultInt = self.g2_configmgr_module.getLastExceptionCode()
             else:
-                raise G2Exception.G2ModuleGenericException("ERROR: Unknown interface name '" + args.interfaceName + "'")
+                raise G2ModuleGenericException("ERROR: Unknown interface name '" + args.interfaceName + "'")
             printWithNewLine('Last exception code: %d' % (resultInt))
         except G2Exception as err:
             print(err)
@@ -2784,7 +2784,7 @@ if __name__ == '__main__':
     g2health.checkIniParams(ini_file_name)
 
     # Get the INI paramaters to use
-    iniParamCreator = G2IniParams.G2IniParams()
+    iniParamCreator = G2IniParams()
     g2module_params = iniParamCreator.getJsonINIParams(ini_file_name)
 
     # Execute a file of commands
