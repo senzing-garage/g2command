@@ -17,7 +17,7 @@ from timeit import default_timer as timer
 import G2Paths
 from G2Health import G2Health
 
-from senzing import G2Config, G2ConfigMgr, G2Diagnostic, G2Engine, G2Exception, G2Hasher, G2IniParams, G2Product
+from senzing import G2Config, G2ConfigMgr, G2Diagnostic, G2Engine, G2Exception, G2Hasher, G2IniParams, G2ModuleGenericException, G2Product
 
 try:
     import readline
@@ -46,12 +46,12 @@ class G2CmdShell(cmd.Cmd, object):
         self.undoc_header = 'Misc Commands'
         self.__hidden_methods = ('do_shell', 'do_EOF', 'do_help')
 
-        self.g2_module = G2Engine.G2Engine()
-        self.g2_hasher_module = G2Hasher.G2Hasher()
-        self.g2_product_module = G2Product.G2Product()
-        self.g2_diagnostic_module = G2Diagnostic.G2Diagnostic()
-        self.g2_config_module = G2Config.G2Config()
-        self.g2_configmgr_module = G2ConfigMgr.G2ConfigMgr()
+        self.g2_module = G2Engine()
+        self.g2_hasher_module = G2Hasher()
+        self.g2_product_module = G2Product()
+        self.g2_diagnostic_module = G2Diagnostic()
+        self.g2_config_module = G2Config()
+        self.g2_configmgr_module = G2ConfigMgr()
 
         self.initialized = False
         self.restart = False
@@ -385,7 +385,7 @@ class G2CmdShell(cmd.Cmd, object):
             self.g2_diagnostic_module.initV2('pyG2Diagnostic', g2module_params, self.debug_trace)
             self.g2_config_module.initV2('pyG2Config', g2module_params, self.debug_trace)
             self.g2_configmgr_module.initV2('pyG2ConfigMgr', g2module_params, self.debug_trace)
-        except G2Exception.G2Exception as ex:
+        except G2Exception as ex:
             printWithNewLines(f'ERROR: {ex}', 'B')
             # Clean up before exiting
             self.postloop()
@@ -649,8 +649,8 @@ class G2CmdShell(cmd.Cmd, object):
             elif args.interfaceName == 'configmgr':
                 self.g2_configmgr_module.clearLastException()
             else:
-                raise G2Exception.G2ModuleGenericException("ERROR: Unknown interface name '" + args.interfaceName + "'")
-        except G2Exception.G2Exception as err:
+                raise G2ModuleGenericException("ERROR: Unknown interface name '" + args.interfaceName + "'")
+        except G2Exception as err:
             print(err)
 
 
@@ -678,9 +678,9 @@ class G2CmdShell(cmd.Cmd, object):
             elif args.interfaceName == 'configmgr':
                 resultString = self.g2_configmgr_module.getLastException()
             else:
-                raise G2Exception.G2ModuleGenericException("ERROR: Unknown interface name '" + args.interfaceName + "'")
+                raise G2ModuleGenericException("ERROR: Unknown interface name '" + args.interfaceName + "'")
             printWithNewLine('Last exception: "%s"' % (resultString))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -707,9 +707,9 @@ class G2CmdShell(cmd.Cmd, object):
             elif args.interfaceName == 'configmgr':
                 resultInt = self.g2_configmgr_module.getLastExceptionCode()
             else:
-                raise G2Exception.G2ModuleGenericException("ERROR: Unknown interface name '" + args.interfaceName + "'")
+                raise G2ModuleGenericException("ERROR: Unknown interface name '" + args.interfaceName + "'")
             printWithNewLine('Last exception code: %d' % (resultInt))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -721,7 +721,7 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             self.g2_module.primeEngine()
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -737,7 +737,7 @@ class G2CmdShell(cmd.Cmd, object):
         try:
             self.g2_module.process(args.jsonData)
             print()
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -761,7 +761,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -810,7 +810,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('%s rows processed, done!' % cnt)
 
                 print()
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -835,7 +835,7 @@ class G2CmdShell(cmd.Cmd, object):
                 processedData = bytearray()
                 self.g2_module.processWithResponse(args.jsonData,processedData)
                 printResponse(processedData.decode())
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -864,7 +864,7 @@ class G2CmdShell(cmd.Cmd, object):
                         processedData = bytearray()
                         self.g2_module.processWithResponse(line.strip(),processedData)
                         printResponse(processedData.decode())
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -894,7 +894,7 @@ class G2CmdShell(cmd.Cmd, object):
                     data_out.write(resultString.decode())
             else:
                 print('{}'.format(resultString.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
         else:
             #Remove 1 for the header on CSV
@@ -927,7 +927,7 @@ class G2CmdShell(cmd.Cmd, object):
                     data_out.write(resultString.decode())
             else:
                 print('{}'.format(resultString.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
         else:
             print('Number of exported records = %s\n' % (recCnt) )
@@ -956,7 +956,7 @@ class G2CmdShell(cmd.Cmd, object):
                     data_out.write(resultString.decode())
             else:
                 print('{}'.format(resultString.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
         else:
             print('Number of exported records = %s\n' % (recCnt - 1))
@@ -985,7 +985,7 @@ class G2CmdShell(cmd.Cmd, object):
                     data_out.write(resultString.decode())
             else:
                 print('{}'.format(resultString.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
         else:
             print('Number of exported records = %s\n' % (recCnt))
@@ -1000,7 +1000,7 @@ class G2CmdShell(cmd.Cmd, object):
             self.g2_config_module.save(configHandle, response)
             self.g2_config_module.close(configHandle)
             print('{}'.format(response.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1017,7 +1017,7 @@ class G2CmdShell(cmd.Cmd, object):
             response = bytearray()
             self.g2_configmgr_module.getConfig(args.configID, response)
             print('{}'.format(response.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1028,7 +1028,7 @@ class G2CmdShell(cmd.Cmd, object):
             response = bytearray()
             self.g2_configmgr_module.getConfigList(response)
             print('{}'.format(response.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1049,7 +1049,7 @@ class G2CmdShell(cmd.Cmd, object):
             configID = bytearray()
             self.g2_configmgr_module.addConfig(configStr, args.configComments, configID)
             printWithNewLine('Config added.  [ID = %s]' % configID.decode())
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1060,7 +1060,7 @@ class G2CmdShell(cmd.Cmd, object):
             configID = bytearray()
             self.g2_configmgr_module.getDefaultConfigID(configID)
             printWithNewLine('Default Config ID: \'%s\'' % (configID.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
     def do_setDefaultConfigID(self, arg):
@@ -1077,7 +1077,7 @@ class G2CmdShell(cmd.Cmd, object):
             printWithNewLines('Default config set, restarting engines...', 'B')
             self.do_restart(None) if not self.debug_trace else self.do_restartDebug(None)
             return True
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
     def do_replaceDefaultConfigID(self, arg):
@@ -1095,7 +1095,7 @@ class G2CmdShell(cmd.Cmd, object):
             self.do_restart(None) if not self.debug_trace else self.do_restartDebug(None)
             return True
 
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1114,7 +1114,7 @@ class G2CmdShell(cmd.Cmd, object):
             else:
                 self.g2_module.addRecord(args.dataSourceCode, args.recordID, args.jsonData)
             printWithNewLine('Record added.')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1141,7 +1141,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1164,7 +1164,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(recordID.decode()))
             else:
                 print('\nNo record ID!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1193,7 +1193,7 @@ class G2CmdShell(cmd.Cmd, object):
             else:
                 print('\nNo info response!\n')
             printWithNewLine('Record added.')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1209,7 +1209,7 @@ class G2CmdShell(cmd.Cmd, object):
         try:
             self.g2_module.reevaluateRecord(args.dataSourceCode, args.recordID, args.flags)
             printWithNewLine('Record reevaluated.')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1235,7 +1235,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('\nNo response!\n')
 
             printWithNewLine('Record reevaluated.')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1251,7 +1251,7 @@ class G2CmdShell(cmd.Cmd, object):
         try:
             self.g2_module.reevaluateEntity(args.entityID, args.flags)
             printWithNewLine('Entity reevaluated.')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1277,7 +1277,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('\nNo response!\n')
 
             printWithNewLine('Entity reevaluated.')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1296,7 +1296,7 @@ class G2CmdShell(cmd.Cmd, object):
             else:
                 self.g2_module.replaceRecord(args.dataSourceCode, args.recordID, args.jsonData)
             printWithNewLine('Record replaced.')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1326,7 +1326,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('\nNo response!\n')
 
             printWithNewLine('Record replaced.')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1345,7 +1345,7 @@ class G2CmdShell(cmd.Cmd, object):
             else:
                 self.g2_module.deleteRecord(args.dataSourceCode, args.recordID)
             printWithNewLine('Record deleted.')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1375,7 +1375,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('\nNo response!\n')
 
             printWithNewLine('Record deleted.')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1395,7 +1395,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1415,7 +1415,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1435,7 +1435,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1456,7 +1456,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1476,7 +1476,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1496,7 +1496,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1516,7 +1516,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1536,7 +1536,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1556,7 +1556,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1576,7 +1576,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1596,7 +1596,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1616,7 +1616,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1636,7 +1636,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1656,7 +1656,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1676,7 +1676,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1696,7 +1696,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1716,7 +1716,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1736,7 +1736,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1756,7 +1756,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1776,7 +1776,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1796,7 +1796,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1816,7 +1816,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1836,7 +1836,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1856,7 +1856,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1876,7 +1876,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1896,7 +1896,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1916,7 +1916,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1936,7 +1936,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1946,7 +1946,7 @@ class G2CmdShell(cmd.Cmd, object):
         try:
             recordCount = self.g2_module.countRedoRecords()
             print('Record Count: %d' % recordCount)
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1960,7 +1960,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('response: {}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -1989,7 +1989,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('info: {}'.format(info.decode()))
             else:
                 print('\nNo info!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2008,7 +2008,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2028,7 +2028,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2048,7 +2048,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2076,7 +2076,7 @@ class G2CmdShell(cmd.Cmd, object):
                     data_out.write(resultString.decode())
             else:
                 print('{}'.format(resultString.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2102,7 +2102,7 @@ class G2CmdShell(cmd.Cmd, object):
                     data_out.write(resultString.decode())
             else:
                 print('{}'.format(resultString.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2119,7 +2119,7 @@ class G2CmdShell(cmd.Cmd, object):
             response = bytearray()
             self.g2_diagnostic_module.checkDBPerf(args.secondsToRun,response)
             print('{}'.format(response.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2130,7 +2130,7 @@ class G2CmdShell(cmd.Cmd, object):
             response = bytearray()
             self.g2_diagnostic_module.getDataSourceCounts(response)
             print('{}'.format(response.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2147,7 +2147,7 @@ class G2CmdShell(cmd.Cmd, object):
             response = bytearray()
             self.g2_diagnostic_module.getMappingStatistics(args.includeInternalFeatures,response)
             print('{}'.format(response.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2164,7 +2164,7 @@ class G2CmdShell(cmd.Cmd, object):
             response = bytearray()
             self.g2_diagnostic_module.getGenericFeatures(args.featureType,args.maximumEstimatedCount,response)
             print('{}'.format(response.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2181,7 +2181,7 @@ class G2CmdShell(cmd.Cmd, object):
             response = bytearray()
             self.g2_diagnostic_module.getEntitySizeBreakdown(args.minimumEntitySize,args.includeInternalFeatures,response)
             print('{}'.format(response.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2198,7 +2198,7 @@ class G2CmdShell(cmd.Cmd, object):
             response = bytearray()
             self.g2_diagnostic_module.getFeature(args.featureID,response)
             print('{}'.format(response.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2209,7 +2209,7 @@ class G2CmdShell(cmd.Cmd, object):
             response = bytearray()
             self.g2_diagnostic_module.getResolutionStatistics(response)
             print('{}'.format(response.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2229,7 +2229,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2240,7 +2240,7 @@ class G2CmdShell(cmd.Cmd, object):
             response = bytearray()
             self.g2_module.stats(response)
             print('{}'.format(response.decode()))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2263,7 +2263,7 @@ class G2CmdShell(cmd.Cmd, object):
                     json.dump(responseMsg,data_out)
             else:
                 printResponse(json.dumps(responseMsg))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2274,7 +2274,7 @@ class G2CmdShell(cmd.Cmd, object):
             response = bytearray()
             self.g2_module.getActiveConfigID(response)
             printResponse(response.decode())
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2285,7 +2285,7 @@ class G2CmdShell(cmd.Cmd, object):
             response = bytearray()
             self.g2_module.getRepositoryLastModifiedTime(response)
             printResponse(response.decode())
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2307,7 +2307,7 @@ class G2CmdShell(cmd.Cmd, object):
                     json.dump(responseMsg,data_out)
             else:
                 printResponse(json.dumps(responseMsg))
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2344,7 +2344,7 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             self.g2_module.purgeRepository(reset_resolver)
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             printWithNewLines(f'G2Exception: {err}', 'B')
 
 
@@ -2364,7 +2364,7 @@ class G2CmdShell(cmd.Cmd, object):
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2395,7 +2395,7 @@ class G2CmdShell(cmd.Cmd, object):
                         self.g2_hasher_module.process(line.strip(),response)
                         hashedData = response.decode()
                         printWithNewLine(hashedData)
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2405,7 +2405,7 @@ class G2CmdShell(cmd.Cmd, object):
         try:
             response = self.g2_product_module.license()
             printWithNewLines(response, 'B')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             printWithNewLines(f'G2Exception: {err}', 'B')
 
 
@@ -2424,7 +2424,7 @@ class G2CmdShell(cmd.Cmd, object):
                 printWithNewLine('License validated')
             else:
                 printWithNewLine('License is not valid.')
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2435,7 +2435,7 @@ class G2CmdShell(cmd.Cmd, object):
             response = json.dumps(json.loads(self.g2_product_module.version()))
             print('\nG2 version:')
             printWithNewLine(response)
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2445,7 +2445,7 @@ class G2CmdShell(cmd.Cmd, object):
         try:
             numCores = self.g2_diagnostic_module.getPhysicalCores()
             printWithNewLine('\nPhysical Cores: %d' % numCores)
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2455,7 +2455,7 @@ class G2CmdShell(cmd.Cmd, object):
         try:
             numCores = self.g2_diagnostic_module.getLogicalCores()
             printWithNewLine('\nLogical Cores: %d' % numCores)
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2465,7 +2465,7 @@ class G2CmdShell(cmd.Cmd, object):
         try:
             memory = self.g2_diagnostic_module.getTotalSystemMemory()
             printWithNewLine('\nTotal System Memory: %d' % memory)
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2475,7 +2475,7 @@ class G2CmdShell(cmd.Cmd, object):
         try:
             memory = self.g2_diagnostic_module.getAvailableMemory()
             printWithNewLine('\nAvailable Memory: %d' % memory)
-        except G2Exception.G2Exception as err:
+        except G2Exception as err:
             print(err)
 
 
@@ -2604,7 +2604,7 @@ if __name__ == '__main__':
     g2health.checkIniParams(ini_file_name)
 
     # Get the INI paramaters to use
-    iniParamCreator = G2IniParams.G2IniParams()
+    iniParamCreator = G2IniParams()
     g2module_params = iniParamCreator.getJsonINIParams(ini_file_name)
 
     # Execute a file of commands
