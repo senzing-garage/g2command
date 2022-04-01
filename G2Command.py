@@ -93,9 +93,9 @@ class G2CmdShell(cmd.Cmd, object):
         interfaceName_parser = self.subparsers.add_parser('interfaceName', usage=argparse.SUPPRESS)
         interfaceName_parser.add_argument('interfaceName')
 
-        searchByAttributes_parser = self.subparsers.add_parser('searchByAttributes', usage=argparse.SUPPRESS)
-        searchByAttributes_parser.add_argument('--jsonData')
-        searchByAttributes_parser.add_argument('--flags', type=int, required=False)
+        searchByAttributesV2_parser = self.subparsers.add_parser('searchByAttributesV2', usage=argparse.SUPPRESS)
+        searchByAttributesV2_parser.add_argument('jsonData')
+        searchByAttributesV2_parser.add_argument('flags', type=int)
 
         processFile_parser = self.subparsers.add_parser('processFile', usage=argparse.SUPPRESS)
         processFile_parser.add_argument('inputFile')
@@ -112,7 +112,7 @@ class G2CmdShell(cmd.Cmd, object):
 
         processWithResponse_parser = self.subparsers.add_parser('processWithResponse',  usage=argparse.SUPPRESS)
         processWithResponse_parser.add_argument('jsonData')
-        processWithResponse_parser.add_argument('-o', '--outputFile')
+        processWithResponse_parser.add_argument('-o', '--outputFile', required=False)
 
         exportEntityReport_parser = self.subparsers.add_parser('exportEntityReport', usage=argparse.SUPPRESS)
         exportEntityReport_parser.add_argument('-f', '--flags', required=True, default=0, type=int)
@@ -159,8 +159,11 @@ class G2CmdShell(cmd.Cmd, object):
         recordDeleteWithInfo_parser.add_argument('-f', '--flags', required=False, type=int)
 
         getEntityByEntityID_parser = self.subparsers.add_parser('getEntityByEntityID', usage=argparse.SUPPRESS)
-        getEntityByEntityID_parser.add_argument('--entityID', type=int)
-        getEntityByEntityID_parser.add_argument('--flags', type=int, required=False)
+        getEntityByEntityID_parser.add_argument('entityID', type=int)
+
+        getEntityByEntityIDV2_parser = self.subparsers.add_parser('getEntityByEntityIDV2', usage=argparse.SUPPRESS)
+        getEntityByEntityIDV2_parser.add_argument('entityID', type=int)
+        getEntityByEntityIDV2_parser.add_argument('flags', type=int)
 
         findInterestingEntitiesByEntityID_parser = self.subparsers.add_parser('findInterestingEntitiesByEntityID', usage=argparse.SUPPRESS)
         findInterestingEntitiesByEntityID_parser.add_argument('entityID', type=int)
@@ -172,32 +175,56 @@ class G2CmdShell(cmd.Cmd, object):
         findInterestingEntitiesByRecordID_parser.add_argument('flags', type=int)
 
         findPathByEntityID_parser = self.subparsers.add_parser('findPathByEntityID', usage=argparse.SUPPRESS)
-        findPathByEntityID_parser.add_argument('--startEntityID', type=int)
-        findPathByEntityID_parser.add_argument('--endEntityID', type=int)
-        findPathByEntityID_parser.add_argument('--maxDegree', type=int)
-        findPathByEntityID_parser.add_argument('--flags', type=int, required=False)
+        findPathByEntityID_parser.add_argument('startEntityID', type=int)
+        findPathByEntityID_parser.add_argument('endEntityID', type=int)
+        findPathByEntityID_parser.add_argument('maxDegree', type=int)
+
+        findPathByEntityIDV2_parser = self.subparsers.add_parser('findPathByEntityIDV2', usage=argparse.SUPPRESS)
+        findPathByEntityIDV2_parser.add_argument('startEntityID', type=int)
+        findPathByEntityIDV2_parser.add_argument('endEntityID', type=int)
+        findPathByEntityIDV2_parser.add_argument('maxDegree', type=int)
+        findPathByEntityIDV2_parser.add_argument('flags', type=int)
 
         findPathExcludingByEntityID_parser = self.subparsers.add_parser('findPathExcludingByEntityID', usage=argparse.SUPPRESS)
-        findPathExcludingByEntityID_parser.add_argument('--startEntityID', type=int)
-        findPathExcludingByEntityID_parser.add_argument('--endEntityID', type=int)
-        findPathExcludingByEntityID_parser.add_argument('--maxDegree', type=int)
-        findPathExcludingByEntityID_parser.add_argument('--excludedEntities')
-        findPathExcludingByEntityID_parser.add_argument('--flags', type=int, required=False)
+        findPathExcludingByEntityID_parser.add_argument('startEntityID', type=int)
+        findPathExcludingByEntityID_parser.add_argument('endEntityID', type=int)
+        findPathExcludingByEntityID_parser.add_argument('maxDegree', type=int)
+        findPathExcludingByEntityID_parser.add_argument('excludedEntities')
+
+        findPathExcludingByEntityIDV2_parser = self.subparsers.add_parser('findPathExcludingByEntityIDV2', usage=argparse.SUPPRESS)
+        findPathExcludingByEntityIDV2_parser.add_argument('startEntityID', type=int)
+        findPathExcludingByEntityIDV2_parser.add_argument('endEntityID', type=int)
+        findPathExcludingByEntityIDV2_parser.add_argument('maxDegree', type=int)
+        findPathExcludingByEntityIDV2_parser.add_argument('excludedEntities')
+        findPathExcludingByEntityIDV2_parser.add_argument('flags', type=int)
 
         findPathIncludingSourceByEntityID_parser = self.subparsers.add_parser('findPathIncludingSourceByEntityID', usage=argparse.SUPPRESS)
-        findPathIncludingSourceByEntityID_parser.add_argument('--startEntityID', type=int)
-        findPathIncludingSourceByEntityID_parser.add_argument('--endEntityID', type=int)
-        findPathIncludingSourceByEntityID_parser.add_argument('--maxDegree', type=int)
-        findPathIncludingSourceByEntityID_parser.add_argument('--excludedEntities')
-        findPathIncludingSourceByEntityID_parser.add_argument('--requiredDsrcs')
-        findPathIncludingSourceByEntityID_parser.add_argument('--flags', type=int, required=False)
+        findPathIncludingSourceByEntityID_parser.add_argument('startEntityID', type=int)
+        findPathIncludingSourceByEntityID_parser.add_argument('endEntityID', type=int)
+        findPathIncludingSourceByEntityID_parser.add_argument('maxDegree', type=int)
+        findPathIncludingSourceByEntityID_parser.add_argument('excludedEntities')
+        findPathIncludingSourceByEntityID_parser.add_argument('requiredDsrcs')
+
+        findPathIncludingSourceByEntityIDV2_parser = self.subparsers.add_parser('findPathIncludingSourceByEntityIDV2', usage=argparse.SUPPRESS)
+        findPathIncludingSourceByEntityIDV2_parser.add_argument('startEntityID', type=int)
+        findPathIncludingSourceByEntityIDV2_parser.add_argument('endEntityID', type=int)
+        findPathIncludingSourceByEntityIDV2_parser.add_argument('maxDegree', type=int)
+        findPathIncludingSourceByEntityIDV2_parser.add_argument('excludedEntities')
+        findPathIncludingSourceByEntityIDV2_parser.add_argument('requiredDsrcs')
+        findPathIncludingSourceByEntityIDV2_parser.add_argument('flags', type=int)
 
         findNetworkByEntityID_parser = self.subparsers.add_parser('findNetworkByEntityID', usage=argparse.SUPPRESS)
-        findNetworkByEntityID_parser.add_argument('--entityList')
-        findNetworkByEntityID_parser.add_argument('--maxDegree', type=int)
-        findNetworkByEntityID_parser.add_argument('--buildOutDegree', type=int)
-        findNetworkByEntityID_parser.add_argument('--maxEntities', type=int)
-        findNetworkByEntityID_parser.add_argument('--flags', type=int, required=False)
+        findNetworkByEntityID_parser.add_argument('entityList')
+        findNetworkByEntityID_parser.add_argument('maxDegree', type=int)
+        findNetworkByEntityID_parser.add_argument('buildOutDegree', type=int)
+        findNetworkByEntityID_parser.add_argument('maxEntities', type=int)
+
+        findNetworkByEntityIDV2_parser = self.subparsers.add_parser('findNetworkByEntityIDV2', usage=argparse.SUPPRESS)
+        findNetworkByEntityIDV2_parser.add_argument('entityList')
+        findNetworkByEntityIDV2_parser.add_argument('maxDegree', type=int)
+        findNetworkByEntityIDV2_parser.add_argument('buildOutDegree', type=int)
+        findNetworkByEntityIDV2_parser.add_argument('maxEntities', type=int)
+        findNetworkByEntityIDV2_parser.add_argument('flags', type=int)
 
         getEntityDetails_parser = self.subparsers.add_parser('getEntityDetails', usage=argparse.SUPPRESS)
         getEntityDetails_parser.add_argument('-e', '--entityID', required=True, type=int, default=0)
@@ -236,9 +263,13 @@ class G2CmdShell(cmd.Cmd, object):
         getEntityByRecordID_parser.add_argument('recordID')
 
         getRecord_parser = self.subparsers.add_parser('getRecord', usage=argparse.SUPPRESS)
-        getRecord_parser.add_argument('--dataSourceCode')
-        getRecord_parser.add_argument('--recordID')
-        getRecord_parser.add_argument('--flags', type=int, required=False)
+        getRecord_parser.add_argument('dataSourceCode')
+        getRecord_parser.add_argument('recordID')
+
+        getRecordV2_parser = self.subparsers.add_parser('getRecordV2', usage=argparse.SUPPRESS)
+        getRecordV2_parser.add_argument('dataSourceCode')
+        getRecordV2_parser.add_argument('recordID')
+        getRecordV2_parser.add_argument('flags', type=int)
 
         reevaluateRecord_parser = self.subparsers.add_parser('reevaluateRecord', usage=argparse.SUPPRESS)
         reevaluateRecord_parser.add_argument('dataSourceCode')
@@ -258,76 +289,126 @@ class G2CmdShell(cmd.Cmd, object):
         reevaluateEntityWithInfo_parser.add_argument('entityID', type=int)
         reevaluateEntityWithInfo_parser.add_argument('-f', '--flags', required=False, type=int)
 
-        getEntityByRecordID2_parser = self.subparsers.add_parser('getEntityByRecordID', usage=argparse.SUPPRESS)
-        getEntityByRecordID2_parser.add_argument('--dataSourceCode')
-        getEntityByRecordID2_parser.add_argument('--recordID')
-        getEntityByRecordID2_parser.add_argument('--flags', type=int, required=False)
+        getEntityByRecordIDV2_parser = self.subparsers.add_parser('getEntityByRecordIDV2', usage=argparse.SUPPRESS)
+        getEntityByRecordIDV2_parser.add_argument('dataSourceCode')
+        getEntityByRecordIDV2_parser.add_argument('recordID')
+        getEntityByRecordIDV2_parser.add_argument('flags', type=int)
 
         findPathByRecordID_parser = self.subparsers.add_parser('findPathByRecordID', usage=argparse.SUPPRESS)
-        findPathByRecordID_parser.add_argument('--startDataSourceCode')
-        findPathByRecordID_parser.add_argument('--startRecordID')
-        findPathByRecordID_parser.add_argument('--endDataSourceCode')
-        findPathByRecordID_parser.add_argument('--endRecordID')
-        findPathByRecordID_parser.add_argument('--maxDegree', type=int)
-        findPathByRecordID_parser.add_argument('--flags', type=int, required=False)
+        findPathByRecordID_parser.add_argument('startDataSourceCode')
+        findPathByRecordID_parser.add_argument('startRecordID')
+        findPathByRecordID_parser.add_argument('endDataSourceCode')
+        findPathByRecordID_parser.add_argument('endRecordID')
+        findPathByRecordID_parser.add_argument('maxDegree', type=int)
+
+        findPathByRecordIDV2_parser = self.subparsers.add_parser('findPathByRecordIDV2', usage=argparse.SUPPRESS)
+        findPathByRecordIDV2_parser.add_argument('startDataSourceCode')
+        findPathByRecordIDV2_parser.add_argument('startRecordID')
+        findPathByRecordIDV2_parser.add_argument('endDataSourceCode')
+        findPathByRecordIDV2_parser.add_argument('endRecordID')
+        findPathByRecordIDV2_parser.add_argument('maxDegree', type=int)
+        findPathByRecordIDV2_parser.add_argument('flags', type=int)
 
         findPathExcludingByRecordID_parser = self.subparsers.add_parser('findPathExcludingByRecordID', usage=argparse.SUPPRESS)
-        findPathExcludingByRecordID_parser.add_argument('--startDataSourceCode')
-        findPathExcludingByRecordID_parser.add_argument('--startRecordID')
-        findPathExcludingByRecordID_parser.add_argument('--endDataSourceCode')
-        findPathExcludingByRecordID_parser.add_argument('--endRecordID')
-        findPathExcludingByRecordID_parser.add_argument('--maxDegree', type=int)
-        findPathExcludingByRecordID_parser.add_argument('--excludedEntities')
-        findPathExcludingByRecordID_parser.add_argument('--flags', type=int, required=False)
+        findPathExcludingByRecordID_parser.add_argument('startDataSourceCode')
+        findPathExcludingByRecordID_parser.add_argument('startRecordID')
+        findPathExcludingByRecordID_parser.add_argument('endDataSourceCode')
+        findPathExcludingByRecordID_parser.add_argument('endRecordID')
+        findPathExcludingByRecordID_parser.add_argument('maxDegree', type=int)
+        findPathExcludingByRecordID_parser.add_argument('excludedEntities')
+
+        findPathExcludingByRecordIDV2_parser = self.subparsers.add_parser('findPathExcludingByRecordIDV2', usage=argparse.SUPPRESS)
+        findPathExcludingByRecordIDV2_parser.add_argument('startDataSourceCode')
+        findPathExcludingByRecordIDV2_parser.add_argument('startRecordID')
+        findPathExcludingByRecordIDV2_parser.add_argument('endDataSourceCode')
+        findPathExcludingByRecordIDV2_parser.add_argument('endRecordID')
+        findPathExcludingByRecordIDV2_parser.add_argument('maxDegree', type=int)
+        findPathExcludingByRecordIDV2_parser.add_argument('excludedEntities')
+        findPathExcludingByRecordIDV2_parser.add_argument('flags', type=int)
 
         findPathIncludingSourceByRecordID_parser = self.subparsers.add_parser('findPathIncludingSourceByRecordID', usage=argparse.SUPPRESS)
-        findPathIncludingSourceByRecordID_parser.add_argument('--startDataSourceCode')
-        findPathIncludingSourceByRecordID_parser.add_argument('--startRecordID')
-        findPathIncludingSourceByRecordID_parser.add_argument('--endDataSourceCode')
-        findPathIncludingSourceByRecordID_parser.add_argument('--endRecordID')
-        findPathIncludingSourceByRecordID_parser.add_argument('--maxDegree', type=int)
-        findPathIncludingSourceByRecordID_parser.add_argument('--excludedEntities')
-        findPathIncludingSourceByRecordID_parser.add_argument('--requiredDsrcs')
-        findPathIncludingSourceByRecordID_parser.add_argument('--flags', type=int, required=False)
+        findPathIncludingSourceByRecordID_parser.add_argument('startDataSourceCode')
+        findPathIncludingSourceByRecordID_parser.add_argument('startRecordID')
+        findPathIncludingSourceByRecordID_parser.add_argument('endDataSourceCode')
+        findPathIncludingSourceByRecordID_parser.add_argument('endRecordID')
+        findPathIncludingSourceByRecordID_parser.add_argument('maxDegree', type=int)
+        findPathIncludingSourceByRecordID_parser.add_argument('excludedEntities')
+        findPathIncludingSourceByRecordID_parser.add_argument('requiredDsrcs')
+
+        findPathIncludingSourceByRecordIDV2_parser = self.subparsers.add_parser('findPathIncludingSourceByRecordIDV2', usage=argparse.SUPPRESS)
+        findPathIncludingSourceByRecordIDV2_parser.add_argument('startDataSourceCode')
+        findPathIncludingSourceByRecordIDV2_parser.add_argument('startRecordID')
+        findPathIncludingSourceByRecordIDV2_parser.add_argument('endDataSourceCode')
+        findPathIncludingSourceByRecordIDV2_parser.add_argument('endRecordID')
+        findPathIncludingSourceByRecordIDV2_parser.add_argument('maxDegree', type=int)
+        findPathIncludingSourceByRecordIDV2_parser.add_argument('excludedEntities')
+        findPathIncludingSourceByRecordIDV2_parser.add_argument('requiredDsrcs')
+        findPathIncludingSourceByRecordIDV2_parser.add_argument('flags', type=int)
 
         findNetworkByRecordID_parser = self.subparsers.add_parser('findNetworkByRecordID', usage=argparse.SUPPRESS)
-        findNetworkByRecordID_parser.add_argument('--recordList')
-        findNetworkByRecordID_parser.add_argument('--maxDegree', type=int)
-        findNetworkByRecordID_parser.add_argument('--buildOutDegree', type=int)
-        findNetworkByRecordID_parser.add_argument('--maxEntities', type=int)
-        findNetworkByRecordID_parser.add_argument('--flags', type=int, required=False)
+        findNetworkByRecordID_parser.add_argument('recordList')
+        findNetworkByRecordID_parser.add_argument('maxDegree', type=int)
+        findNetworkByRecordID_parser.add_argument('buildOutDegree', type=int)
+        findNetworkByRecordID_parser.add_argument('maxEntities', type=int)
+
+        findNetworkByRecordIDV2_parser = self.subparsers.add_parser('findNetworkByRecordIDV2', usage=argparse.SUPPRESS)
+        findNetworkByRecordIDV2_parser.add_argument('recordList')
+        findNetworkByRecordIDV2_parser.add_argument('maxDegree', type=int)
+        findNetworkByRecordIDV2_parser.add_argument('buildOutDegree', type=int)
+        findNetworkByRecordIDV2_parser.add_argument('maxEntities', type=int)
+        findNetworkByRecordIDV2_parser.add_argument('flags', type=int)
 
         whyEntityByRecordID_parser = self.subparsers.add_parser('whyEntityByRecordID', usage=argparse.SUPPRESS)
-        whyEntityByRecordID_parser.add_argument('--dataSourceCode')
-        whyEntityByRecordID_parser.add_argument('--recordID')
-        whyEntityByRecordID_parser.add_argument('--flags', type=int, required=False)
+        whyEntityByRecordID_parser.add_argument('dataSourceCode')
+        whyEntityByRecordID_parser.add_argument('recordID')
+
+        whyEntityByRecordIDV2_parser = self.subparsers.add_parser('whyEntityByRecordIDV2', usage=argparse.SUPPRESS)
+        whyEntityByRecordIDV2_parser.add_argument('dataSourceCode')
+        whyEntityByRecordIDV2_parser.add_argument('recordID')
+        whyEntityByRecordIDV2_parser.add_argument('flags', type=int)
 
         whyEntityByEntityID_parser = self.subparsers.add_parser('whyEntityByEntityID', usage=argparse.SUPPRESS)
-        whyEntityByEntityID_parser.add_argument('--entityID', type=int)
-        whyEntityByEntityID_parser.add_argument('--flags', type=int, required=False)
+        whyEntityByEntityID_parser.add_argument('entityID', type=int)
+
+        whyEntityByEntityIDV2_parser = self.subparsers.add_parser('whyEntityByEntityIDV2', usage=argparse.SUPPRESS)
+        whyEntityByEntityIDV2_parser.add_argument('entityID', type=int)
+        whyEntityByEntityIDV2_parser.add_argument('flags', type=int)
 
         howEntityByEntityID_parser = self.subparsers.add_parser('howEntityByEntityID', usage=argparse.SUPPRESS)
-        howEntityByEntityID_parser.add_argument('--entityID', type=int)
-        howEntityByEntityID_parser.add_argument('--flags', type=int, required=False)
+        howEntityByEntityID_parser.add_argument('entityID', type=int)
+
+        howEntityByEntityIDV2_parser = self.subparsers.add_parser('howEntityByEntityIDV2', usage=argparse.SUPPRESS)
+        howEntityByEntityIDV2_parser.add_argument('entityID', type=int)
+        howEntityByEntityIDV2_parser.add_argument('flags', type=int)
 
         getVirtualEntityByRecordID_parser = self.subparsers.add_parser('getVirtualEntityByRecordID', usage=argparse.SUPPRESS)
         getVirtualEntityByRecordID_parser.add_argument('recordList')
 
-        getVirtualEntityByRecordID_parser = self.subparsers.add_parser('getVirtualEntityByRecordID', usage=argparse.SUPPRESS)
-        getVirtualEntityByRecordID_parser.add_argument('--recordList')
-        getVirtualEntityByRecordID_parser.add_argument('--flags', type=int, required=False)
+        getVirtualEntityByRecordIDV2_parser = self.subparsers.add_parser('getVirtualEntityByRecordIDV2', usage=argparse.SUPPRESS)
+        getVirtualEntityByRecordIDV2_parser.add_argument('recordList')
+        getVirtualEntityByRecordIDV2_parser.add_argument('flags', type=int)
 
         whyEntities_parser = self.subparsers.add_parser('whyEntities', usage=argparse.SUPPRESS)
-        whyEntities_parser.add_argument('--entityID1', type=int)
-        whyEntities_parser.add_argument('--entityID2', type=int)
-        whyEntities_parser.add_argument('--flags', type=int, required=False)
+        whyEntities_parser.add_argument('entityID1', type=int)
+        whyEntities_parser.add_argument('entityID2', type=int)
+
+        whyEntitiesV2_parser = self.subparsers.add_parser('whyEntitiesV2', usage=argparse.SUPPRESS)
+        whyEntitiesV2_parser.add_argument('entityID1', type=int)
+        whyEntitiesV2_parser.add_argument('entityID2', type=int)
+        whyEntitiesV2_parser.add_argument('flags', type=int)
 
         whyRecords_parser = self.subparsers.add_parser('whyRecords', usage=argparse.SUPPRESS)
-        whyRecords_parser.add_argument('--dataSourceCode1')
-        whyRecords_parser.add_argument('--recordID1')
-        whyRecords_parser.add_argument('--dataSourceCode2')
-        whyRecords_parser.add_argument('--recordID2')
-        whyRecords_parser.add_argument('--flags', type=int, required=False)
+        whyRecords_parser.add_argument('dataSourceCode1')
+        whyRecords_parser.add_argument('recordID1')
+        whyRecords_parser.add_argument('dataSourceCode2')
+        whyRecords_parser.add_argument('recordID2')
+
+        whyRecordsV2_parser = self.subparsers.add_parser('whyRecordsV2', usage=argparse.SUPPRESS)
+        whyRecordsV2_parser.add_argument('dataSourceCode1')
+        whyRecordsV2_parser.add_argument('recordID1')
+        whyRecordsV2_parser.add_argument('dataSourceCode2')
+        whyRecordsV2_parser.add_argument('recordID2')
+        whyRecordsV2_parser.add_argument('flags', type=int)
 
         outputOptional_parser = self.subparsers.add_parser('outputOptional',  usage=argparse.SUPPRESS)
         outputOptional_parser.add_argument('-o', '--outputFile', required=False)
@@ -1285,21 +1366,39 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
+
     def do_searchByAttributes(self, arg):
-        '\nSearch by attributes:  searchByAttributes <jsonData> <flags>\n'
+        '\nSearch by attributes:  searchByAttributes <jsonData>\n'
 
         try:
-            args = self.parser.parse_args(['searchByAttributes'] + parse(arg))
+            args = self.parser.parse_args(['jsonOnly'] + parse(arg))
         except SystemExit:
             print(self.do_searchByAttributes.__doc__)
             return
 
-        kwargs = {}
-        if args.flags:
-            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.searchByAttributes(args.jsonData,response,**kwargs)
+            self.g2_module.searchByAttributes(args.jsonData,response)
+            if response:
+                print('{}'.format(response.decode()))
+            else:
+                print('\nNo response!\n')
+        except G2Exception as err:
+            print(err)
+
+
+    def do_searchByAttributesV2(self, arg):
+        '\nSearch by attributes:  searchByAttributesV2 <jsonData> <flags>\n'
+
+        try:
+            args = self.parser.parse_args(['searchByAttributesV2'] + parse(arg))
+        except SystemExit:
+            print(self.do_searchByAttributesV2.__doc__)
+            return
+
+        try:
+            response = bytearray()
+            self.g2_module.searchByAttributesV2(args.jsonData,args.flags,response)
             if response:
                 print('{}'.format(response.decode()))
             else:
