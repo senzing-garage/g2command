@@ -660,7 +660,7 @@ class G2CmdShell(cmd.Cmd, object):
                 self.histFileError = None
                 self.histAvail = True
 
-     # ----- exception commands -----
+    # ----- exception commands -----
 
     def do_clearLastException(self, arg):
         '\nClear the last exception:  clearLastException <interfaceName>\n'
