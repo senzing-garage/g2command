@@ -93,9 +93,9 @@ class G2CmdShell(cmd.Cmd, object):
         interfaceName_parser = self.subparsers.add_parser('interfaceName', usage=argparse.SUPPRESS)
         interfaceName_parser.add_argument('interfaceName')
 
-        searchByAttributesV2_parser = self.subparsers.add_parser('searchByAttributesV2', usage=argparse.SUPPRESS)
-        searchByAttributesV2_parser.add_argument('jsonData')
-        searchByAttributesV2_parser.add_argument('flags', type=int)
+        searchByAttributes_parser = self.subparsers.add_parser('searchByAttributes', usage=argparse.SUPPRESS)
+        searchByAttributes_parser.add_argument('--jsonData')
+        searchByAttributes_parser.add_argument('--flags', type=int, required=False)
 
         processFile_parser = self.subparsers.add_parser('processFile', usage=argparse.SUPPRESS)
         processFile_parser.add_argument('inputFile')
@@ -159,11 +159,8 @@ class G2CmdShell(cmd.Cmd, object):
         recordDeleteWithInfo_parser.add_argument('-f', '--flags', required=False, type=int)
 
         getEntityByEntityID_parser = self.subparsers.add_parser('getEntityByEntityID', usage=argparse.SUPPRESS)
-        getEntityByEntityID_parser.add_argument('entityID', type=int)
-
-        getEntityByEntityIDV2_parser = self.subparsers.add_parser('getEntityByEntityIDV2', usage=argparse.SUPPRESS)
-        getEntityByEntityIDV2_parser.add_argument('entityID', type=int)
-        getEntityByEntityIDV2_parser.add_argument('flags', type=int)
+        getEntityByEntityID_parser.add_argument('--entityID', type=int)
+        getEntityByEntityID_parser.add_argument('--flags', type=int, required=False)
 
         findInterestingEntitiesByEntityID_parser = self.subparsers.add_parser('findInterestingEntitiesByEntityID', usage=argparse.SUPPRESS)
         findInterestingEntitiesByEntityID_parser.add_argument('entityID', type=int)
@@ -175,56 +172,32 @@ class G2CmdShell(cmd.Cmd, object):
         findInterestingEntitiesByRecordID_parser.add_argument('flags', type=int)
 
         findPathByEntityID_parser = self.subparsers.add_parser('findPathByEntityID', usage=argparse.SUPPRESS)
-        findPathByEntityID_parser.add_argument('startEntityID', type=int)
-        findPathByEntityID_parser.add_argument('endEntityID', type=int)
-        findPathByEntityID_parser.add_argument('maxDegree', type=int)
-
-        findPathByEntityIDV2_parser = self.subparsers.add_parser('findPathByEntityIDV2', usage=argparse.SUPPRESS)
-        findPathByEntityIDV2_parser.add_argument('startEntityID', type=int)
-        findPathByEntityIDV2_parser.add_argument('endEntityID', type=int)
-        findPathByEntityIDV2_parser.add_argument('maxDegree', type=int)
-        findPathByEntityIDV2_parser.add_argument('flags', type=int)
+        findPathByEntityID_parser.add_argument('--startEntityID', type=int)
+        findPathByEntityID_parser.add_argument('--endEntityID', type=int)
+        findPathByEntityID_parser.add_argument('--maxDegree', type=int)
+        findPathByEntityID_parser.add_argument('--flags', type=int, required=False)
 
         findPathExcludingByEntityID_parser = self.subparsers.add_parser('findPathExcludingByEntityID', usage=argparse.SUPPRESS)
-        findPathExcludingByEntityID_parser.add_argument('startEntityID', type=int)
-        findPathExcludingByEntityID_parser.add_argument('endEntityID', type=int)
-        findPathExcludingByEntityID_parser.add_argument('maxDegree', type=int)
-        findPathExcludingByEntityID_parser.add_argument('excludedEntities')
-
-        findPathExcludingByEntityIDV2_parser = self.subparsers.add_parser('findPathExcludingByEntityIDV2', usage=argparse.SUPPRESS)
-        findPathExcludingByEntityIDV2_parser.add_argument('startEntityID', type=int)
-        findPathExcludingByEntityIDV2_parser.add_argument('endEntityID', type=int)
-        findPathExcludingByEntityIDV2_parser.add_argument('maxDegree', type=int)
-        findPathExcludingByEntityIDV2_parser.add_argument('excludedEntities')
-        findPathExcludingByEntityIDV2_parser.add_argument('flags', type=int)
+        findPathExcludingByEntityID_parser.add_argument('--startEntityID', type=int)
+        findPathExcludingByEntityID_parser.add_argument('--endEntityID', type=int)
+        findPathExcludingByEntityID_parser.add_argument('--maxDegree', type=int)
+        findPathExcludingByEntityID_parser.add_argument('--excludedEntities')
+        findPathExcludingByEntityID_parser.add_argument('--flags', type=int, required=False)
 
         findPathIncludingSourceByEntityID_parser = self.subparsers.add_parser('findPathIncludingSourceByEntityID', usage=argparse.SUPPRESS)
-        findPathIncludingSourceByEntityID_parser.add_argument('startEntityID', type=int)
-        findPathIncludingSourceByEntityID_parser.add_argument('endEntityID', type=int)
-        findPathIncludingSourceByEntityID_parser.add_argument('maxDegree', type=int)
-        findPathIncludingSourceByEntityID_parser.add_argument('excludedEntities')
-        findPathIncludingSourceByEntityID_parser.add_argument('requiredDsrcs')
-
-        findPathIncludingSourceByEntityIDV2_parser = self.subparsers.add_parser('findPathIncludingSourceByEntityIDV2', usage=argparse.SUPPRESS)
-        findPathIncludingSourceByEntityIDV2_parser.add_argument('startEntityID', type=int)
-        findPathIncludingSourceByEntityIDV2_parser.add_argument('endEntityID', type=int)
-        findPathIncludingSourceByEntityIDV2_parser.add_argument('maxDegree', type=int)
-        findPathIncludingSourceByEntityIDV2_parser.add_argument('excludedEntities')
-        findPathIncludingSourceByEntityIDV2_parser.add_argument('requiredDsrcs')
-        findPathIncludingSourceByEntityIDV2_parser.add_argument('flags', type=int)
+        findPathIncludingSourceByEntityID_parser.add_argument('--startEntityID', type=int)
+        findPathIncludingSourceByEntityID_parser.add_argument('--endEntityID', type=int)
+        findPathIncludingSourceByEntityID_parser.add_argument('--maxDegree', type=int)
+        findPathIncludingSourceByEntityID_parser.add_argument('--excludedEntities')
+        findPathIncludingSourceByEntityID_parser.add_argument('--requiredDsrcs')
+        findPathIncludingSourceByEntityID_parser.add_argument('--flags', type=int, required=False)
 
         findNetworkByEntityID_parser = self.subparsers.add_parser('findNetworkByEntityID', usage=argparse.SUPPRESS)
-        findNetworkByEntityID_parser.add_argument('entityList')
-        findNetworkByEntityID_parser.add_argument('maxDegree', type=int)
-        findNetworkByEntityID_parser.add_argument('buildOutDegree', type=int)
-        findNetworkByEntityID_parser.add_argument('maxEntities', type=int)
-
-        findNetworkByEntityIDV2_parser = self.subparsers.add_parser('findNetworkByEntityIDV2', usage=argparse.SUPPRESS)
-        findNetworkByEntityIDV2_parser.add_argument('entityList')
-        findNetworkByEntityIDV2_parser.add_argument('maxDegree', type=int)
-        findNetworkByEntityIDV2_parser.add_argument('buildOutDegree', type=int)
-        findNetworkByEntityIDV2_parser.add_argument('maxEntities', type=int)
-        findNetworkByEntityIDV2_parser.add_argument('flags', type=int)
+        findNetworkByEntityID_parser.add_argument('--entityList')
+        findNetworkByEntityID_parser.add_argument('--maxDegree', type=int)
+        findNetworkByEntityID_parser.add_argument('--buildOutDegree', type=int)
+        findNetworkByEntityID_parser.add_argument('--maxEntities', type=int)
+        findNetworkByEntityID_parser.add_argument('--flags', type=int, required=False)
 
         getEntityDetails_parser = self.subparsers.add_parser('getEntityDetails', usage=argparse.SUPPRESS)
         getEntityDetails_parser.add_argument('-e', '--entityID', required=True, type=int, default=0)
@@ -263,13 +236,9 @@ class G2CmdShell(cmd.Cmd, object):
         getEntityByRecordID_parser.add_argument('recordID')
 
         getRecord_parser = self.subparsers.add_parser('getRecord', usage=argparse.SUPPRESS)
-        getRecord_parser.add_argument('dataSourceCode')
-        getRecord_parser.add_argument('recordID')
-
-        getRecordV2_parser = self.subparsers.add_parser('getRecordV2', usage=argparse.SUPPRESS)
-        getRecordV2_parser.add_argument('dataSourceCode')
-        getRecordV2_parser.add_argument('recordID')
-        getRecordV2_parser.add_argument('flags', type=int)
+        getRecord_parser.add_argument('--dataSourceCode')
+        getRecord_parser.add_argument('--recordID')
+        getRecord_parser.add_argument('--flags', type=int, required=False)
 
         reevaluateRecord_parser = self.subparsers.add_parser('reevaluateRecord', usage=argparse.SUPPRESS)
         reevaluateRecord_parser.add_argument('dataSourceCode')
@@ -289,126 +258,76 @@ class G2CmdShell(cmd.Cmd, object):
         reevaluateEntityWithInfo_parser.add_argument('entityID', type=int)
         reevaluateEntityWithInfo_parser.add_argument('-f', '--flags', required=False, type=int)
 
-        getEntityByRecordIDV2_parser = self.subparsers.add_parser('getEntityByRecordIDV2', usage=argparse.SUPPRESS)
-        getEntityByRecordIDV2_parser.add_argument('dataSourceCode')
-        getEntityByRecordIDV2_parser.add_argument('recordID')
-        getEntityByRecordIDV2_parser.add_argument('flags', type=int)
+        getEntityByRecordID2_parser = self.subparsers.add_parser('getEntityByRecordID', usage=argparse.SUPPRESS)
+        getEntityByRecordID2_parser.add_argument('--dataSourceCode')
+        getEntityByRecordID2_parser.add_argument('--recordID')
+        getEntityByRecordID2_parser.add_argument('--flags', type=int, required=False)
 
         findPathByRecordID_parser = self.subparsers.add_parser('findPathByRecordID', usage=argparse.SUPPRESS)
-        findPathByRecordID_parser.add_argument('startDataSourceCode')
-        findPathByRecordID_parser.add_argument('startRecordID')
-        findPathByRecordID_parser.add_argument('endDataSourceCode')
-        findPathByRecordID_parser.add_argument('endRecordID')
-        findPathByRecordID_parser.add_argument('maxDegree', type=int)
-
-        findPathByRecordIDV2_parser = self.subparsers.add_parser('findPathByRecordIDV2', usage=argparse.SUPPRESS)
-        findPathByRecordIDV2_parser.add_argument('startDataSourceCode')
-        findPathByRecordIDV2_parser.add_argument('startRecordID')
-        findPathByRecordIDV2_parser.add_argument('endDataSourceCode')
-        findPathByRecordIDV2_parser.add_argument('endRecordID')
-        findPathByRecordIDV2_parser.add_argument('maxDegree', type=int)
-        findPathByRecordIDV2_parser.add_argument('flags', type=int)
+        findPathByRecordID_parser.add_argument('--startDataSourceCode')
+        findPathByRecordID_parser.add_argument('--startRecordID')
+        findPathByRecordID_parser.add_argument('--endDataSourceCode')
+        findPathByRecordID_parser.add_argument('--endRecordID')
+        findPathByRecordID_parser.add_argument('--maxDegree', type=int)
+        findPathByRecordID_parser.add_argument('--flags', type=int, required=False)
 
         findPathExcludingByRecordID_parser = self.subparsers.add_parser('findPathExcludingByRecordID', usage=argparse.SUPPRESS)
-        findPathExcludingByRecordID_parser.add_argument('startDataSourceCode')
-        findPathExcludingByRecordID_parser.add_argument('startRecordID')
-        findPathExcludingByRecordID_parser.add_argument('endDataSourceCode')
-        findPathExcludingByRecordID_parser.add_argument('endRecordID')
-        findPathExcludingByRecordID_parser.add_argument('maxDegree', type=int)
-        findPathExcludingByRecordID_parser.add_argument('excludedEntities')
-
-        findPathExcludingByRecordIDV2_parser = self.subparsers.add_parser('findPathExcludingByRecordIDV2', usage=argparse.SUPPRESS)
-        findPathExcludingByRecordIDV2_parser.add_argument('startDataSourceCode')
-        findPathExcludingByRecordIDV2_parser.add_argument('startRecordID')
-        findPathExcludingByRecordIDV2_parser.add_argument('endDataSourceCode')
-        findPathExcludingByRecordIDV2_parser.add_argument('endRecordID')
-        findPathExcludingByRecordIDV2_parser.add_argument('maxDegree', type=int)
-        findPathExcludingByRecordIDV2_parser.add_argument('excludedEntities')
-        findPathExcludingByRecordIDV2_parser.add_argument('flags', type=int)
+        findPathExcludingByRecordID_parser.add_argument('--startDataSourceCode')
+        findPathExcludingByRecordID_parser.add_argument('--startRecordID')
+        findPathExcludingByRecordID_parser.add_argument('--endDataSourceCode')
+        findPathExcludingByRecordID_parser.add_argument('--endRecordID')
+        findPathExcludingByRecordID_parser.add_argument('--maxDegree', type=int)
+        findPathExcludingByRecordID_parser.add_argument('--excludedEntities')
+        findPathExcludingByRecordID_parser.add_argument('--flags', type=int, required=False)
 
         findPathIncludingSourceByRecordID_parser = self.subparsers.add_parser('findPathIncludingSourceByRecordID', usage=argparse.SUPPRESS)
-        findPathIncludingSourceByRecordID_parser.add_argument('startDataSourceCode')
-        findPathIncludingSourceByRecordID_parser.add_argument('startRecordID')
-        findPathIncludingSourceByRecordID_parser.add_argument('endDataSourceCode')
-        findPathIncludingSourceByRecordID_parser.add_argument('endRecordID')
-        findPathIncludingSourceByRecordID_parser.add_argument('maxDegree', type=int)
-        findPathIncludingSourceByRecordID_parser.add_argument('excludedEntities')
-        findPathIncludingSourceByRecordID_parser.add_argument('requiredDsrcs')
-
-        findPathIncludingSourceByRecordIDV2_parser = self.subparsers.add_parser('findPathIncludingSourceByRecordIDV2', usage=argparse.SUPPRESS)
-        findPathIncludingSourceByRecordIDV2_parser.add_argument('startDataSourceCode')
-        findPathIncludingSourceByRecordIDV2_parser.add_argument('startRecordID')
-        findPathIncludingSourceByRecordIDV2_parser.add_argument('endDataSourceCode')
-        findPathIncludingSourceByRecordIDV2_parser.add_argument('endRecordID')
-        findPathIncludingSourceByRecordIDV2_parser.add_argument('maxDegree', type=int)
-        findPathIncludingSourceByRecordIDV2_parser.add_argument('excludedEntities')
-        findPathIncludingSourceByRecordIDV2_parser.add_argument('requiredDsrcs')
-        findPathIncludingSourceByRecordIDV2_parser.add_argument('flags', type=int)
+        findPathIncludingSourceByRecordID_parser.add_argument('--startDataSourceCode')
+        findPathIncludingSourceByRecordID_parser.add_argument('--startRecordID')
+        findPathIncludingSourceByRecordID_parser.add_argument('--endDataSourceCode')
+        findPathIncludingSourceByRecordID_parser.add_argument('--endRecordID')
+        findPathIncludingSourceByRecordID_parser.add_argument('--maxDegree', type=int)
+        findPathIncludingSourceByRecordID_parser.add_argument('--excludedEntities')
+        findPathIncludingSourceByRecordID_parser.add_argument('--requiredDsrcs')
+        findPathIncludingSourceByRecordID_parser.add_argument('--flags', type=int, required=False)
 
         findNetworkByRecordID_parser = self.subparsers.add_parser('findNetworkByRecordID', usage=argparse.SUPPRESS)
-        findNetworkByRecordID_parser.add_argument('recordList')
-        findNetworkByRecordID_parser.add_argument('maxDegree', type=int)
-        findNetworkByRecordID_parser.add_argument('buildOutDegree', type=int)
-        findNetworkByRecordID_parser.add_argument('maxEntities', type=int)
-
-        findNetworkByRecordIDV2_parser = self.subparsers.add_parser('findNetworkByRecordIDV2', usage=argparse.SUPPRESS)
-        findNetworkByRecordIDV2_parser.add_argument('recordList')
-        findNetworkByRecordIDV2_parser.add_argument('maxDegree', type=int)
-        findNetworkByRecordIDV2_parser.add_argument('buildOutDegree', type=int)
-        findNetworkByRecordIDV2_parser.add_argument('maxEntities', type=int)
-        findNetworkByRecordIDV2_parser.add_argument('flags', type=int)
+        findNetworkByRecordID_parser.add_argument('--recordList')
+        findNetworkByRecordID_parser.add_argument('--maxDegree', type=int)
+        findNetworkByRecordID_parser.add_argument('--buildOutDegree', type=int)
+        findNetworkByRecordID_parser.add_argument('--maxEntities', type=int)
+        findNetworkByRecordID_parser.add_argument('--flags', type=int, required=False)
 
         whyEntityByRecordID_parser = self.subparsers.add_parser('whyEntityByRecordID', usage=argparse.SUPPRESS)
-        whyEntityByRecordID_parser.add_argument('dataSourceCode')
-        whyEntityByRecordID_parser.add_argument('recordID')
-
-        whyEntityByRecordIDV2_parser = self.subparsers.add_parser('whyEntityByRecordIDV2', usage=argparse.SUPPRESS)
-        whyEntityByRecordIDV2_parser.add_argument('dataSourceCode')
-        whyEntityByRecordIDV2_parser.add_argument('recordID')
-        whyEntityByRecordIDV2_parser.add_argument('flags', type=int)
+        whyEntityByRecordID_parser.add_argument('--dataSourceCode')
+        whyEntityByRecordID_parser.add_argument('--recordID')
+        whyEntityByRecordID_parser.add_argument('--flags', type=int, required=False)
 
         whyEntityByEntityID_parser = self.subparsers.add_parser('whyEntityByEntityID', usage=argparse.SUPPRESS)
-        whyEntityByEntityID_parser.add_argument('entityID', type=int)
-
-        whyEntityByEntityIDV2_parser = self.subparsers.add_parser('whyEntityByEntityIDV2', usage=argparse.SUPPRESS)
-        whyEntityByEntityIDV2_parser.add_argument('entityID', type=int)
-        whyEntityByEntityIDV2_parser.add_argument('flags', type=int)
+        whyEntityByEntityID_parser.add_argument('--entityID', type=int)
+        whyEntityByEntityID_parser.add_argument('--flags', type=int, required=False)
 
         howEntityByEntityID_parser = self.subparsers.add_parser('howEntityByEntityID', usage=argparse.SUPPRESS)
-        howEntityByEntityID_parser.add_argument('entityID', type=int)
-
-        howEntityByEntityIDV2_parser = self.subparsers.add_parser('howEntityByEntityIDV2', usage=argparse.SUPPRESS)
-        howEntityByEntityIDV2_parser.add_argument('entityID', type=int)
-        howEntityByEntityIDV2_parser.add_argument('flags', type=int)
+        howEntityByEntityID_parser.add_argument('--entityID', type=int)
+        howEntityByEntityID_parser.add_argument('--flags', type=int, required=False)
 
         getVirtualEntityByRecordID_parser = self.subparsers.add_parser('getVirtualEntityByRecordID', usage=argparse.SUPPRESS)
         getVirtualEntityByRecordID_parser.add_argument('recordList')
 
-        getVirtualEntityByRecordIDV2_parser = self.subparsers.add_parser('getVirtualEntityByRecordIDV2', usage=argparse.SUPPRESS)
-        getVirtualEntityByRecordIDV2_parser.add_argument('recordList')
-        getVirtualEntityByRecordIDV2_parser.add_argument('flags', type=int)
+        getVirtualEntityByRecordID_parser = self.subparsers.add_parser('getVirtualEntityByRecordID', usage=argparse.SUPPRESS)
+        getVirtualEntityByRecordID_parser.add_argument('--recordList')
+        getVirtualEntityByRecordID_parser.add_argument('--flags', type=int, required=False)
 
         whyEntities_parser = self.subparsers.add_parser('whyEntities', usage=argparse.SUPPRESS)
-        whyEntities_parser.add_argument('entityID1', type=int)
-        whyEntities_parser.add_argument('entityID2', type=int)
-
-        whyEntitiesV2_parser = self.subparsers.add_parser('whyEntitiesV2', usage=argparse.SUPPRESS)
-        whyEntitiesV2_parser.add_argument('entityID1', type=int)
-        whyEntitiesV2_parser.add_argument('entityID2', type=int)
-        whyEntitiesV2_parser.add_argument('flags', type=int)
+        whyEntities_parser.add_argument('--entityID1', type=int)
+        whyEntities_parser.add_argument('--entityID2', type=int)
+        whyEntities_parser.add_argument('--flags', type=int, required=False)
 
         whyRecords_parser = self.subparsers.add_parser('whyRecords', usage=argparse.SUPPRESS)
-        whyRecords_parser.add_argument('dataSourceCode1')
-        whyRecords_parser.add_argument('recordID1')
-        whyRecords_parser.add_argument('dataSourceCode2')
-        whyRecords_parser.add_argument('recordID2')
-
-        whyRecordsV2_parser = self.subparsers.add_parser('whyRecordsV2', usage=argparse.SUPPRESS)
-        whyRecordsV2_parser.add_argument('dataSourceCode1')
-        whyRecordsV2_parser.add_argument('recordID1')
-        whyRecordsV2_parser.add_argument('dataSourceCode2')
-        whyRecordsV2_parser.add_argument('recordID2')
-        whyRecordsV2_parser.add_argument('flags', type=int)
+        whyRecords_parser.add_argument('--dataSourceCode1')
+        whyRecords_parser.add_argument('--recordID1')
+        whyRecords_parser.add_argument('--dataSourceCode2')
+        whyRecords_parser.add_argument('--recordID2')
+        whyRecords_parser.add_argument('--flags', type=int, required=False)
 
         outputOptional_parser = self.subparsers.add_parser('outputOptional', usage=argparse.SUPPRESS)
         outputOptional_parser.add_argument('-o', '--outputFile', required=False)
@@ -1323,36 +1242,20 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_searchByAttributes(self, arg):
-        '\nSearch by attributes:  searchByAttributes <jsonData>\n'
+        '\nSearch by attributes:  searchByAttributes <jsonData> <flags>\n'
 
         try:
-            args = self.parser.parse_args(['jsonOnly'] + parse(arg))
+            args = self.parser.parse_args(['searchByAttributes'] + parse(arg))
         except SystemExit:
             print(self.do_searchByAttributes.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.searchByAttributes(args.jsonData, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_searchByAttributesV2(self, arg):
-        '\nSearch by attributes:  searchByAttributesV2 <jsonData> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['searchByAttributesV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_searchByAttributesV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.searchByAttributesV2(args.jsonData, args.flags, response)
+            self.g2_module.searchByAttributes(args.jsonData, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1361,7 +1264,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_getEntityByEntityID(self, arg):
-        '\nGet entity by resolved entity ID:  getEntityByEntityID <entityID>\n'
+        '\nGet entity by resolved entity ID:  getEntityByEntityID <entityID> <flags>\n'
 
         try:
             args = self.parser.parse_args(['getEntityByEntityID'] + parse(arg))
@@ -1369,9 +1272,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_getEntityByEntityID.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.getEntityByEntityID(args.entityID, response)
+            self.g2_module.getEntityByEntityID(args.entityID, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1379,18 +1285,21 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-    def do_getEntityByEntityIDV2(self, arg):
-        '\nGet entity by resolved entity ID:  getEntityByEntityIDV2 <entityID> <flags>\n'
+    def do_getEntityByEntityID(self, arg):
+        '\nGet entity by resolved entity ID:  getEntityByEntityID <entityID> <flags>\n'
 
         try:
-            args = self.parser.parse_args(['getEntityByEntityIDV2'] + parse(arg))
+            args = self.parser.parse_args(['getEntityByEntityID'] + parse(arg))
         except SystemExit:
-            print(self.do_getEntityByEntityIDV2.__doc__)
+            print(self.do_getEntityByEntityID.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.getEntityByEntityIDV2(args.entityID, args.flags, response)
+            self.g2_module.getEntityByEntityID(args.entityID, response, **kwargs)
 
             if response:
                 print('{}'.format(response.decode()))
@@ -1439,7 +1348,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_findPathByEntityID(self, arg):
-        '\nFind path between two entities:  findPathByEntityID <startEntityID> <endEntityID> <maxDegree>\n'
+        '\nFind path between two entities:  findPathByEntityID <startEntityID> <endEntityID> <maxDegree> <flags>\n'
 
         try:
             args = self.parser.parse_args(['findPathByEntityID'] + parse(arg))
@@ -1447,28 +1356,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_findPathByEntityID.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.findPathByEntityID(args.startEntityID, args.endEntityID, args.maxDegree, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_findPathByEntityIDV2(self, arg):
-        '\nFind path between two entities:  findPathByEntityIDV2 <startEntityID> <endEntityID> <maxDegree> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['findPathByEntityIDV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_findPathByEntityIDV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.findPathByEntityIDV2(args.startEntityID, args.endEntityID, args.maxDegree, args.flags, response)
+            self.g2_module.findPathByEntityID(args.startEntityID, args.endEntityID, args.maxDegree, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1477,7 +1370,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_findNetworkByEntityID(self, arg):
-        '\nFind network between entities:  findNetworkByEntityID <entityList> <maxDegree> <buildOutDegree> <maxEntities>\n'
+        '\nFind network between entities:  findNetworkByEntityID <entityList> <maxDegree> <buildOutDegree> <maxEntities> <flags>\n'
 
         try:
             args = self.parser.parse_args(['findNetworkByEntityID'] + parse(arg))
@@ -1485,28 +1378,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_findNetworkByEntityID.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.findNetworkByEntityID(args.entityList, args.maxDegree, args.buildOutDegree, args.maxEntities, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_findNetworkByEntityIDV2(self, arg):
-        '\nFind network between entities:  findNetworkByEntityIDV2 <entityList> <maxDegree> <buildOutDegree> <maxEntities> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['findNetworkByEntityIDV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_findNetworkByEntityIDV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.findNetworkByEntityIDV2(args.entityList, args.maxDegree, args.buildOutDegree, args.maxEntities, args.flags, response)
+            self.g2_module.findNetworkByEntityID(args.entityList, args.maxDegree, args.buildOutDegree, args.maxEntities, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1515,7 +1392,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_findPathExcludingByEntityID(self, arg):
-        '\nFind path between two entities, with exclusions:  findPathExcludingByEntityID <startEntityID> <endEntityID> <maxDegree> <excludedEntities>\n'
+        '\nFind path between two entities, with exclusions:  findPathExcludingByEntityID <startEntityID> <endEntityID> <maxDegree> <excludedEntities> <flags>\n'
 
         try:
             args = self.parser.parse_args(['findPathExcludingByEntityID'] + parse(arg))
@@ -1523,28 +1400,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_findPathExcludingByEntityID.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.findPathExcludingByEntityID(args.startEntityID, args.endEntityID, args.maxDegree, args.excludedEntities, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_findPathExcludingByEntityIDV2(self, arg):
-        '\nFind path between two entities, with exclusions:  findPathExcludingByEntityIDV2 <startEntityID> <endEntityID> <maxDegree> <excludedEntities> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['findPathExcludingByEntityIDV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_findPathExcludingByEntityIDV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.findPathExcludingByEntityIDV2(args.startEntityID, args.endEntityID, args.maxDegree, args.excludedEntities, args.flags, response)
+            self.g2_module.findPathExcludingByEntityID(args.startEntityID, args.endEntityID, args.maxDegree, args.excludedEntities, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1553,7 +1414,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_findPathIncludingSourceByEntityID(self, arg):
-        '\nFind path between two entities that includes a watched dsrc list, with exclusions:  findPathIncludingSourceByEntityID <startEntityID> <endEntityID> <maxDegree> <excludedEntities> <requiredDsrcs>\n'
+        '\nFind path between two entities that includes a watched dsrc list, with exclusions:  findPathIncludingSourceByEntityID <startEntityID> <endEntityID> <maxDegree> <excludedEntities> <requiredDsrcs> <flags>\n'
 
         try:
             args = self.parser.parse_args(['findPathIncludingSourceByEntityID'] + parse(arg))
@@ -1561,28 +1422,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_findPathIncludingSourceByEntityID.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.findPathIncludingSourceByEntityID(args.startEntityID, args.endEntityID, args.maxDegree, args.excludedEntities, args.requiredDsrcs, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_findPathIncludingSourceByEntityIDV2(self, arg):
-        '\nFind path between two entities that includes a watched dsrc list, with exclusions:  findPathIncludingSourceByEntityIDV2 <startEntityID> <endEntityID> <maxDegree> <excludedEntities> <requiredDsrcs> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['findPathIncludingSourceByEntityIDV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_findPathIncludingSourceByEntityIDV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.findPathIncludingSourceByEntityIDV2(args.startEntityID, args.endEntityID, args.maxDegree, args.excludedEntities, args.requiredDsrcs, args.flags, response)
+            self.g2_module.findPathIncludingSourceByEntityID(args.startEntityID, args.endEntityID, args.maxDegree, args.excludedEntities, args.requiredDsrcs, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1591,7 +1436,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_getEntityByRecordID(self, arg):
-        '\nGet entity by record ID:  getEntityByRecordID <dataSourceCode> <recordID>\n'
+        '\nGet entity by record ID:  getEntityByRecordID <dataSourceCode> <recordID> <flags>\n'
 
         try:
             args = self.parser.parse_args(['getEntityByRecordID'] + parse(arg))
@@ -1599,28 +1444,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_getEntityByRecordID.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.getEntityByRecordID(args.dataSourceCode, args.recordID, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_getEntityByRecordIDV2(self, arg):
-        '\nGet entity by record ID:  getEntityByRecordIDV2 <dataSourceCode> <recordID> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['getEntityByRecordIDV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_getEntityByRecordIDV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.getEntityByRecordIDV2(args.dataSourceCode, args.recordID, args.flags, response)
+            self.g2_module.getEntityByRecordID(args.dataSourceCode, args.recordID, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1629,7 +1458,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_findPathByRecordID(self, arg):
-        '\nFind path between two records:  findPathByRecordID <startDataSourceCode> <startRecordID> <endDataSourceCode> <endRecordID> <maxDegree>\n'
+        '\nFind path between two records:  findPathByRecordID <startDataSourceCode> <startRecordID> <endDataSourceCode> <endRecordID> <maxDegree> <flags>\n'
 
         try:
             args = self.parser.parse_args(['findPathByRecordID'] + parse(arg))
@@ -1637,28 +1466,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_findPathByRecordID.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.findPathByRecordID(args.startDataSourceCode, args.startRecordID, args.endDataSourceCode, args.endRecordID, args.maxDegree, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_findPathByRecordIDV2(self, arg):
-        '\nFind path between two records:  findPathByRecordIDV2 <startDataSourceCode> <startRecordID> <endDataSourceCode> <endRecordID> <maxDegree> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['findPathByRecordIDV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_findPathByRecordIDV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.findPathByRecordIDV2(args.startDataSourceCode, args.startRecordID, args.endDataSourceCode, args.endRecordID, args.maxDegree, args.flags, response)
+            self.g2_module.findPathByRecordID(args.startDataSourceCode, args.startRecordID, args.endDataSourceCode, args.endRecordID, args.maxDegree, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1667,7 +1480,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_findNetworkByRecordID(self, arg):
-        '\nFind network between records:  findNetworkByRecordID <recordList> <maxDegree> <buildOutDegree> <maxEntities>\n'
+        '\nFind network between records:  findNetworkByRecordID <recordList> <maxDegree> <buildOutDegree> <maxEntities> <flags>\n'
 
         try:
             args = self.parser.parse_args(['findNetworkByRecordID'] + parse(arg))
@@ -1675,28 +1488,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_findNetworkByRecordID.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.findNetworkByRecordID(args.recordList, args.maxDegree, args.buildOutDegree, args.maxEntities, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_findNetworkByRecordIDV2(self, arg):
-        '\nFind network between records:  findNetworkByRecordIDV2 <recordList> <maxDegree> <buildOutDegree> <maxEntities> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['findNetworkByRecordIDV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_findNetworkByRecordIDV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.findNetworkByRecordIDV2(args.recordList, args.maxDegree, args.buildOutDegree, args.maxEntities, args.flags, response)
+            self.g2_module.findNetworkByRecordID(args.recordList, args.maxDegree, args.buildOutDegree, args.maxEntities, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1705,7 +1502,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_whyEntityByRecordID(self, arg):
-        '\nDetermine why a record is inside its entity:  whyEntityByRecordID <dataSourceCode> <recordID>\n'
+        '\nDetermine why a record is inside its entity:  whyEntityByRecordID <dataSourceCode> <recordID> <flags>\n'
 
         try:
             args = self.parser.parse_args(['whyEntityByRecordID'] + parse(arg))
@@ -1713,28 +1510,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_whyEntityByRecordID.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.whyEntityByRecordID(args.dataSourceCode, args.recordID, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_whyEntityByRecordIDV2(self, arg):
-        '\nDetermine why a record is inside its entity:  whyEntityByRecordIDV2 <dataSourceCode> <recordID> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['whyEntityByRecordIDV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_whyEntityByRecordIDV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.whyEntityByRecordIDV2(args.dataSourceCode, args.recordID, args.flags, response)
+            self.g2_module.whyEntityByRecordID(args.dataSourceCode, args.recordID, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1743,7 +1524,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_whyEntityByEntityID(self, arg):
-        '\nDetermine why records are inside an entity:  whyEntityByEntityID <entityID>\n'
+        '\nDetermine why records are inside an entity:  whyEntityByEntityID <entityID> <flags>\n'
 
         try:
             args = self.parser.parse_args(['whyEntityByEntityID'] + parse(arg))
@@ -1751,28 +1532,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_whyEntityByEntityID.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.whyEntityByEntityID(args.entityID, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_whyEntityByEntityIDV2(self, arg):
-        '\nDetermine why records are inside an entity:  whyEntityByEntityIDV2 <entityID> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['whyEntityByEntityIDV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_whyEntityByEntityIDV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.whyEntityByEntityIDV2(args.entityID, args.flags, response)
+            self.g2_module.whyEntityByEntityID(args.entityID, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1781,7 +1546,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_howEntityByEntityID(self, arg):
-        '\nRetrieve information on how entities are constructed from their base records:  howEntityByEntityID <entityID>\n'
+        '\nRetrieve information on how entities are constructed from their base records:  howEntityByEntityID <entityID> <flags>\n'
 
         try:
             args = self.parser.parse_args(['howEntityByEntityID'] + parse(arg))
@@ -1789,28 +1554,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_howEntityByEntityID.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.howEntityByEntityID(args.entityID, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_howEntityByEntityIDV2(self, arg):
-        '\nRetrieve information on how entities are constructed from their base records:  howEntityByEntityIDV2 <entityID> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['howEntityByEntityIDV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_howEntityByEntityIDV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.howEntityByEntityIDV2(args.entityID, args.flags, response)
+            self.g2_module.howEntityByEntityID(args.entityID, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1819,7 +1568,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_getVirtualEntityByRecordID(self, arg):
-        '\nDetermine how an entity composed of a given set of records would look:  getVirtualEntityByRecordID <recordList>\n'
+        '\nDetermine how an entity composed of a given set of records would look:  getVirtualEntityByRecordID <recordList> <flags>\n'
 
         try:
             args = self.parser.parse_args(['getVirtualEntityByRecordID'] + parse(arg))
@@ -1827,28 +1576,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_getVirtualEntityByRecordID.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.getVirtualEntityByRecordID(args.recordList, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_getVirtualEntityByRecordIDV2(self, arg):
-        '\nDetermine how an entity composed of a given set of records would look:  getVirtualEntityByRecordIDV2 <recordList> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['getVirtualEntityByRecordIDV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_getVirtualEntityByRecordIDV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.getVirtualEntityByRecordIDV2(args.recordList, args.flags, response)
+            self.g2_module.getVirtualEntityByRecordID(args.recordList, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1857,7 +1590,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_whyEntities(self, arg):
-        '\nDetermine how entities relate to each other:  whyEntities <entityID1> <entityID2>\n'
+        '\nDetermine how entities relate to each other:  whyEntities <entityID1> <entityID2> <flags>\n'
 
         try:
             args = self.parser.parse_args(['whyEntities'] + parse(arg))
@@ -1865,28 +1598,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_whyEntities.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.whyEntities(args.entityID1, args.entityID2, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_whyEntitiesV2(self, arg):
-        '\nDetermine how entities relate to each other:  whyEntitiesV2 <entityID1> <entityID2> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['whyEntitiesV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_whyEntitiesV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.whyEntitiesV2(args.entityID1, args.entityID2, args.flags, response)
+            self.g2_module.whyEntities(args.entityID1, args.entityID2, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1895,7 +1612,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_whyRecords(self, arg):
-        '\nDetermine how two records relate to each other:  whyRecords <dataSourceCode1> <recordID1> <dataSourceCode2> <recordID2>\n'
+        '\nDetermine how two records relate to each other:  whyRecords <dataSourceCode1> <recordID1> <dataSourceCode2> <recordID2> <flags>\n'
 
         try:
             args = self.parser.parse_args(['whyRecords'] + parse(arg))
@@ -1903,28 +1620,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_whyRecords.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.whyRecords(args.dataSourceCode1, args.recordID1, args.dataSourceCode2, args.recordID2, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_whyRecordsV2(self, arg):
-        '\nDetermine how two records relate to each other:  whyRecordsV2 <dataSourceCode1> <recordID1> <dataSourceCode2> <recordID2> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['whyRecordsV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_whyRecordsV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.whyRecordsV2(args.dataSourceCode1, args.recordID1, args.dataSourceCode2, args.recordID2, args.flags, response)
+            self.g2_module.whyRecords(args.dataSourceCode1, args.recordID1, args.dataSourceCode2, args.recordID2, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1933,7 +1634,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_findPathExcludingByRecordID(self, arg):
-        '\nFind path between two records, with exclusions:  findPathExcludingByRecordID <startDataSourceCode> <startRecordID> <endDataSourceCode> <endRecordID> <maxDegree> <excludedEntities>\n'
+        '\nFind path between two records, with exclusions:  findPathExcludingByRecordID <startDataSourceCode> <startRecordID> <endDataSourceCode> <endRecordID> <maxDegree> <excludedEntities> <flags>\n'
 
         try:
             args = self.parser.parse_args(['findPathExcludingByRecordID'] + parse(arg))
@@ -1941,28 +1642,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_findPathExcludingByRecordID.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.findPathExcludingByRecordID(args.startDataSourceCode, args.startRecordID, args.endDataSourceCode, args.endRecordID, args.maxDegree, args.excludedEntities, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_findPathExcludingByRecordIDV2(self, arg):
-        '\nFind path between two records, with exclusions:  findPathExcludingByRecordIDV2 <startDataSourceCode> <startRecordID> <endDataSourceCode> <endRecordID> <maxDegree> <excludedEntities> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['findPathExcludingByRecordIDV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_findPathExcludingByRecordIDV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.findPathExcludingByRecordIDV2(args.startDataSourceCode, args.startRecordID, args.endDataSourceCode, args.endRecordID, args.maxDegree, args.excludedEntities, args.flags, response)
+            self.g2_module.findPathExcludingByRecordID(args.startDataSourceCode, args.startRecordID, args.endDataSourceCode, args.endRecordID, args.maxDegree, args.excludedEntities, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1971,7 +1656,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_findPathIncludingSourceByRecordID(self, arg):
-        '\nFind path between two records that includes a watched dsrc list, with exclusions:  findPathIncludingSourceByRecordID <startDataSourceCode> <startRecordID> <endDataSourceCode> <endRecordID> <maxDegree> <excludedEntities> <requiredDsrcs>\n'
+        '\nFind path between two records that includes a watched dsrc list, with exclusions:  findPathIncludingSourceByRecordID <startDataSourceCode> <startRecordID> <endDataSourceCode> <endRecordID> <maxDegree> <excludedEntities> <requiredDsrcs> <flags>\n'
 
         try:
             args = self.parser.parse_args(['findPathIncludingSourceByRecordID'] + parse(arg))
@@ -1979,28 +1664,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_findPathIncludingSourceByRecordID.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.findPathIncludingSourceByRecordID(args.startDataSourceCode, args.startRecordID, args.endDataSourceCode, args.endRecordID, args.maxDegree, args.excludedEntities, args.requiredDsrcs, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_findPathIncludingSourceByRecordIDV2(self, arg):
-        '\nFind path between two records that includes a watched dsrc list, with exclusions:  findPathIncludingSourceByRecordIDV2 <startDataSourceCode> <startRecordID> <endDataSourceCode> <endRecordID> <maxDegree> <excludedEntities> <requiredDsrcs> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['findPathIncludingSourceByRecordIDV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_findPathIncludingSourceByRecordIDV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.findPathIncludingSourceByRecordIDV2(args.startDataSourceCode, args.startRecordID, args.endDataSourceCode, args.endRecordID, args.maxDegree, args.excludedEntities, args.requiredDsrcs, args.flags, response)
+            self.g2_module.findPathIncludingSourceByRecordID(args.startDataSourceCode, args.startRecordID, args.endDataSourceCode, args.endRecordID, args.maxDegree, args.excludedEntities, args.requiredDsrcs, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -2009,7 +1678,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_getRecord(self, arg):
-        '\nGet record for record ID :  getRecord <dataSourceCode> <recordID>\n'
+        '\nGet record for record ID :  getRecord <dataSourceCode> <recordID> <flags>\n'
 
         try:
             args = self.parser.parse_args(['getRecord'] + parse(arg))
@@ -2017,28 +1686,12 @@ class G2CmdShell(cmd.Cmd, object):
             print(self.do_getRecord.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.getRecord(args.dataSourceCode, args.recordID, response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-    def do_getRecordV2(self, arg):
-        '\nGet record for record ID :  getRecordV2 <dataSourceCode> <recordID> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['getRecordV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_getRecordV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.getRecordV2(args.dataSourceCode, args.recordID, args.flags, response)
+            self.g2_module.getRecord(args.dataSourceCode, args.recordID, response, **kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
