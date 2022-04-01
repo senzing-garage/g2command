@@ -28,7 +28,7 @@ except ImportError:
 
 class G2CmdShell(cmd.Cmd, object):
 
-    #Override function from cmd module to make command completion case insensitive
+    # Override function from cmd module to make command completion case insensitive
     def completenames(self, text, *ignored):
         dotext = 'do_' + text
         return [a[3:] for a in self.get_names() if a.lower().startswith(dotext.lower())]
@@ -110,7 +110,7 @@ class G2CmdShell(cmd.Cmd, object):
         inputFile_parser.add_argument('inputFile')
         inputFile_parser.add_argument('-o', '--outputFile', required=False)
 
-        processWithResponse_parser = self.subparsers.add_parser('processWithResponse',  usage=argparse.SUPPRESS)
+        processWithResponse_parser = self.subparsers.add_parser('processWithResponse', usage=argparse.SUPPRESS)
         processWithResponse_parser.add_argument('jsonData')
         processWithResponse_parser.add_argument('-o', '--outputFile', required=False)
 
@@ -410,19 +410,18 @@ class G2CmdShell(cmd.Cmd, object):
         whyRecordsV2_parser.add_argument('recordID2')
         whyRecordsV2_parser.add_argument('flags', type=int)
 
-        outputOptional_parser = self.subparsers.add_parser('outputOptional',  usage=argparse.SUPPRESS)
+        outputOptional_parser = self.subparsers.add_parser('outputOptional', usage=argparse.SUPPRESS)
         outputOptional_parser.add_argument('-o', '--outputFile', required=False)
 
-        findEntitiesByFeatureIDs_parser = self.subparsers.add_parser('findEntitiesByFeatureIDs',  usage=argparse.SUPPRESS)
+        findEntitiesByFeatureIDs_parser = self.subparsers.add_parser('findEntitiesByFeatureIDs', usage=argparse.SUPPRESS)
         findEntitiesByFeatureIDs_parser.add_argument('features')
 
-        purgeRepository_parser = self.subparsers.add_parser('purgeRepository',  usage=argparse.SUPPRESS)
+        purgeRepository_parser = self.subparsers.add_parser('purgeRepository', usage=argparse.SUPPRESS)
         purgeRepository_parser.add_argument('-n', '--noReset', required=False, nargs='?', const=1, type=int)
         purgeRepository_parser.add_argument('-FORCEPURGE', '--FORCEPURGE', dest='forcePurge', action='store_true', default=False)
 
         processRedoRecordWithInfo_parser = self.subparsers.add_parser('processRedoRecordWithInfo', usage=argparse.SUPPRESS)
         processRedoRecordWithInfo_parser.add_argument('-f', '--flags', required=False, type=int)
-
 
     def preloop(self):
 
@@ -451,7 +450,6 @@ class G2CmdShell(cmd.Cmd, object):
         self.initialized = True
         printWithNewLines('Welcome to G2Command. Type help or ? to list commands.', 'B')
 
-
     def postloop(self):
 
         with suppress(Exception):
@@ -464,16 +462,14 @@ class G2CmdShell(cmd.Cmd, object):
 
         self.initialized = False
 
-
     def precmd(self, line):
 
         if self.timerOn:
-            #Reset timer for every command
+            # Reset timer for every command
             self.timerStart = self.timerEnd = None
             self.timerStart = timer()
 
         return cmd.Cmd.precmd(self, line)
-
 
     def postcmd(self, stop, line):
 
@@ -484,10 +480,8 @@ class G2CmdShell(cmd.Cmd, object):
 
         return cmd.Cmd.postcmd(self, stop, line)
 
-
     def do_quit(self, arg):
         return True
-
 
     def do_exit(self, arg):
 
@@ -498,21 +492,17 @@ class G2CmdShell(cmd.Cmd, object):
     def ret_quit(self):
         return self.quit
 
-
     def do_EOF(self, line):
         return True
 
-
     def emptyline(self):
         return
-
 
     def default(self, line):
 
         printWithNewLines(f'ERROR: Unknown command, type help or ? to list available commands and help.', 'B')
 
         return
-
 
     def cmdloop(self, intro=None):
 
@@ -536,7 +526,7 @@ class G2CmdShell(cmd.Cmd, object):
             for line in data_in:
                 line = line.strip()
                 # Ignore comments
-                if len(line) > 0 and line[0:1] not in ('#','-','/'):
+                if len(line) > 0 and line[0:1] not in ('#', '-', '/'):
                     # *args allows for empty list if there are no args
                     (read_cmd, *args) = line.split()
                     process_cmd = f'do_{read_cmd}'
@@ -553,7 +543,6 @@ class G2CmdShell(cmd.Cmd, object):
                         except (ValueError, TypeError) as ex:
                             printWithNewLines('ERROR: Command could not be run!', 'S')
                             printWithNewLines(f'       {ex}', 'E')
-
 
     def get_names(self):
         ''' Hide do_shell from list of APIs. Seperate help section for it  '''
@@ -576,7 +565,6 @@ class G2CmdShell(cmd.Cmd, object):
                 - <output_file> = replace with path and/or filename to output to
             '''), 'S')
 
-
     def help_InterfaceName(self):
         printWithNewLines(textwrap.dedent('''\
             - The name of a G2 interface (engine, product, diagnostic, hasher, config, configmgr).
@@ -586,7 +574,6 @@ class G2CmdShell(cmd.Cmd, object):
         printWithNewLines(textwrap.dedent('''\
             - Senzing Knowledge Center: https://senzing.zendesk.com/hc/en-us
             '''), 'S')
-
 
     def help_Support(self):
         printWithNewLines(textwrap.dedent('''\
@@ -621,7 +608,6 @@ class G2CmdShell(cmd.Cmd, object):
                 - History file error: {self.histFileError}
             '''), 'S')
 
-
     def help_Restart(self):
         printWithNewLines(textwrap.dedent('''\
             - restartDebug - Restart G2Command and enable engine debug
@@ -629,13 +615,11 @@ class G2CmdShell(cmd.Cmd, object):
             - restart - Restart G2Command, if restartDebug has previouisly been issued, disable engine debug
             '''), 'S')
 
-
-    def do_shell(self,line):
+    def do_shell(self, line):
 
         '\nRun OS shell commands: !<command>\n'
         output = os.popen(line).read()
         print(output)
-
 
     def histCheck(self):
         '''  '''
@@ -650,13 +634,13 @@ class G2CmdShell(cmd.Cmd, object):
                 tmpHist = '.' + os.path.basename(sys.argv[0].lower().replace('.py', '_history'))
                 self.histFileName = os.path.join(os.path.expanduser('~'), tmpHist)
 
-                #Try and open history in users home first for longevity
+                # Try and open history in users home first for longevity
                 try:
                     open(self.histFileName, 'a').close()
                 except IOError as e:
                     self.histFileError = f'{e} - Couldn\'t use home, trying /tmp/...'
 
-                #Can't use users home, try using /tmp/ for history useful at least in the session
+                # Can't use users home, try using /tmp/ for history useful at least in the session
                 if self.histFileError:
 
                     self.histFileName = f'/tmp/{tmpHist}'
@@ -676,10 +660,9 @@ class G2CmdShell(cmd.Cmd, object):
                 self.histFileError = None
                 self.histAvail = True
 
-
      # ----- exception commands -----
 
-    def do_clearLastException(self,arg):
+    def do_clearLastException(self, arg):
         '\nClear the last exception:  clearLastException <interfaceName>\n'
         try:
             args = self.parser.parse_args(['interfaceName'] + parse(arg))
@@ -705,8 +688,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
-    def do_getLastException(self,arg):
+    def do_getLastException(self, arg):
         '\nGet the last exception:  getLastException <interfaceName>\n'
 
         try:
@@ -735,8 +717,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
-    def do_getLastExceptionCode(self,arg):
+    def do_getLastExceptionCode(self, arg):
         '\nGet the last exception:  getLastExceptionCode <interfaceName>\n'
         try:
             args = self.parser.parse_args(['interfaceName'] + parse(arg))
@@ -764,18 +745,15 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
     # ----- basic G2 commands -----
 
-
-    def do_primeEngine(self,arg):
+    def do_primeEngine(self, arg):
         '\nPrime the G2 engine:  primeEngine\n'
 
         try:
             self.g2_module.primeEngine()
         except G2Exception as err:
             print(err)
-
 
     def do_process(self, arg):
         '\nProcess a generic record:  process <json_data>\n'
@@ -791,7 +769,6 @@ class G2CmdShell(cmd.Cmd, object):
             print()
         except G2Exception as err:
             print(err)
-
 
     def do_processWithInfo(self, arg):
         '\nProcess a generic record with returned info:  process <json_data> [-f flags]\n'
@@ -815,7 +792,6 @@ class G2CmdShell(cmd.Cmd, object):
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_processFile(self, arg):
         '\nProcess a file of entity records:  processFile <input_file>\n'
@@ -857,14 +833,13 @@ class G2CmdShell(cmd.Cmd, object):
 
                     self.g2_module.process(jsonStr)
                     cnt += 1
-                    if cnt % 1000 ==0:
+                    if cnt % 1000 == 0:
                         print('%s rows processed' % cnt)
                 print('%s rows processed, done!' % cnt)
 
                 print()
         except G2Exception as err:
             print(err)
-
 
     def do_processWithResponse(self, arg):
         '\nProcess a generic record, and print response:  processWithResponse <json_data> [-o <output_file>]\n'
@@ -879,17 +854,16 @@ class G2CmdShell(cmd.Cmd, object):
             if args.outputFile:
                 with open(args.outputFile, 'w') as data_out:
                     processedData = bytearray()
-                    self.g2_module.processWithResponse(args.jsonData,processedData)
+                    self.g2_module.processWithResponse(args.jsonData, processedData)
                     data_out.write(processedData.decode())
                     data_out.write('\n')
                 print()
             else:
                 processedData = bytearray()
-                self.g2_module.processWithResponse(args.jsonData,processedData)
+                self.g2_module.processWithResponse(args.jsonData, processedData)
                 printResponse(processedData.decode())
         except G2Exception as err:
             print(err)
-
 
     def do_processFileWithResponse(self, arg):
         '\nProcess a file of entity records:  processFileWithResponse <input_file> [-o <output_file>]\n'
@@ -906,19 +880,18 @@ class G2CmdShell(cmd.Cmd, object):
                     with open(args.inputFile.split("?")[0]) as data_in:
                         for line in data_in:
                             processedData = bytearray()
-                            self.g2_module.processWithResponse(line.strip(),processedData)
+                            self.g2_module.processWithResponse(line.strip(), processedData)
                             data_out.write(processedData.decode())
                             data_out.write('\n')
                 print()
             else:
-                with open(args.inputFile.split("?")[0]) as data_in :
+                with open(args.inputFile.split("?")[0]) as data_in:
                     for line in data_in:
                         processedData = bytearray()
-                        self.g2_module.processWithResponse(line.strip(),processedData)
+                        self.g2_module.processWithResponse(line.strip(), processedData)
                         printResponse(processedData.decode())
         except G2Exception as err:
             print(err)
-
 
     def do_exportCSVEntityReport(self, arg):
         '\nExport repository contents as CSV:  exportCSVEntityReport -t <csvColumnList> -f <flags> [-o <output_file>]\n'
@@ -930,14 +903,14 @@ class G2CmdShell(cmd.Cmd, object):
         try:
             exportHandle = self.g2_module.exportCSVEntityReport(args.headersForCSV, args.flags)
             response = bytearray()
-            rowData = self.g2_module.fetchNext(exportHandle,response)
+            rowData = self.g2_module.fetchNext(exportHandle, response)
             recCnt = 0
             resultString = b""
             while rowData:
                 resultString += response
                 recCnt = recCnt + 1
                 response = bytearray()
-                rowData = self.g2_module.fetchNext(exportHandle,response)
+                rowData = self.g2_module.fetchNext(exportHandle, response)
             self.g2_module.closeExport(exportHandle)
             if args.outputFile:
                 with open(args.outputFile, 'w') as data_out:
@@ -959,7 +932,7 @@ class G2CmdShell(cmd.Cmd, object):
         try:
             exportHandle = self.g2_module.exportJSONEntityReport(args.flags)
             response = bytearray()
-            rowData = self.g2_module.fetchNext(exportHandle,response)
+            rowData = self.g2_module.fetchNext(exportHandle, response)
             recCnt = 0
             resultString = b""
             while rowData:
@@ -978,7 +951,6 @@ class G2CmdShell(cmd.Cmd, object):
         else:
             print('Number of exported records = %s\n' % (recCnt))
 
-
     def do_getTemplateConfig(self, arg):
         '\nGet a template config:  getTemplateConfig \n'
 
@@ -990,7 +962,6 @@ class G2CmdShell(cmd.Cmd, object):
             print('{}'.format(response.decode()))
         except G2Exception as err:
             print(err)
-
 
     def do_getConfig(self, arg):
         '\nGet the config:  getConfig <configID> \n'
@@ -1008,7 +979,6 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
     def do_getConfigList(self, arg):
         '\nGet a list of known configs:  getConfigList \n'
 
@@ -1018,7 +988,6 @@ class G2CmdShell(cmd.Cmd, object):
             print('{}'.format(response.decode()))
         except G2Exception as err:
             print(err)
-
 
     def do_addConfigFile(self, arg):
         '\nAdd config from a file:  addConfigFile <configJsonFile> <configComments>\n'
@@ -1039,7 +1008,6 @@ class G2CmdShell(cmd.Cmd, object):
             printWithNewLine('Config added.  [ID = %s]' % configID.decode())
         except G2Exception as err:
             print(err)
-
 
     def do_getDefaultConfigID(self, arg):
         '\nGet the default config ID:  getDefaultConfigID \n'
@@ -1086,7 +1054,6 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
     def do_addRecord(self, arg):
         '\nAdd record:  addRecord <dataSourceCode> <recordID> <jsonData> [-l <loadID>]\n'
 
@@ -1104,7 +1071,6 @@ class G2CmdShell(cmd.Cmd, object):
             printWithNewLine('Record added.')
         except G2Exception as err:
             print(err)
-
 
     def do_addRecordWithInfo(self, arg):
         '\nAdd record with returned info:  addRecordWithInfo <dataSourceCode> <recordID> <jsonData> [-l <loadID> -f <flags>]\n'
@@ -1124,14 +1090,13 @@ class G2CmdShell(cmd.Cmd, object):
                 flags = int(args.flags)
 
             response = bytearray()
-            self.g2_module.addRecordWithInfo(args.dataSourceCode, args.recordID, args.jsonData,response,loadId=loadID,flags=flags)
+            self.g2_module.addRecordWithInfo(args.dataSourceCode, args.recordID, args.jsonData, response, loadId=loadID, flags=flags)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_addRecordWithReturnedRecordID(self, arg):
         '\nAdd record with returned record ID:  addRecordWithReturnedRecordID <dataSourceCode> <jsonData> [-l <loadID>]\n'
@@ -1154,7 +1119,6 @@ class G2CmdShell(cmd.Cmd, object):
                 print('\nNo record ID!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_addRecordWithInfoWithReturnedRecordID(self, arg):
         '\nAdd record with returned record ID:  addRecordWithInfoWithReturnedRecordID <dataSourceCode> <jsonData> [-l <loadID>] [-f <flags>]\n'
@@ -1184,7 +1148,6 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
     def do_reevaluateRecord(self, arg):
         '\n Reevaluate record:  reevaluateRecord <dataSourceCode> <recordID> <flags>\n'
 
@@ -1199,7 +1162,6 @@ class G2CmdShell(cmd.Cmd, object):
             printWithNewLine('Record reevaluated.')
         except G2Exception as err:
             print(err)
-
 
     def do_reevaluateRecordWithInfo(self, arg):
         '\n Reevaluate record with returned info:  reevaluateRecordWithInfo <dataSourceCode> <recordID> [-f flags]\n'
@@ -1216,7 +1178,7 @@ class G2CmdShell(cmd.Cmd, object):
                 flags = int(args.flags)
 
             response = bytearray()
-            self.g2_module.reevaluateRecordWithInfo(args.dataSourceCode,args.recordID,response,flags=flags)
+            self.g2_module.reevaluateRecordWithInfo(args.dataSourceCode, args.recordID, response, flags=flags)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1225,7 +1187,6 @@ class G2CmdShell(cmd.Cmd, object):
             printWithNewLine('Record reevaluated.')
         except G2Exception as err:
             print(err)
-
 
     def do_reevaluateEntity(self, arg):
         '\n Reevaluate entity:  reevaluateEntity <entityID> <flags>\n'
@@ -1242,7 +1203,6 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
     def do_reevaluateEntityWithInfo(self, arg):
         '\n Reevaluate entity with returned info:  reevaluateEntityWithInfo <entityID> [-f flags]\n'
 
@@ -1258,7 +1218,7 @@ class G2CmdShell(cmd.Cmd, object):
                 flags = int(args.flags)
 
             response = bytearray()
-            self.g2_module.reevaluateEntityWithInfo(args.entityID,response,flags=flags)
+            self.g2_module.reevaluateEntityWithInfo(args.entityID, response, flags=flags)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -1267,7 +1227,6 @@ class G2CmdShell(cmd.Cmd, object):
             printWithNewLine('Entity reevaluated.')
         except G2Exception as err:
             print(err)
-
 
     def do_replaceRecord(self, arg):
         '\nReplace record:  replaceRecord <dataSourceCode> <recordID> <jsonData> [-l loadID]\n'
@@ -1287,7 +1246,6 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
     def do_replaceRecordWithInfo(self, arg):
         '\nReplace record with returned info:  replaceRecordWithInfo <dataSourceCode> <recordID> <jsonData> [-l loadID -f flags]\n'
 
@@ -1306,7 +1264,7 @@ class G2CmdShell(cmd.Cmd, object):
                 flags = int(args.flags)
 
             response = bytearray()
-            self.g2_module.replaceRecordWithInfo(args.dataSourceCode,args.recordID,args.jsonData,response,loadId=loadID,flags=flags)
+            self.g2_module.replaceRecordWithInfo(args.dataSourceCode, args.recordID, args.jsonData, response, loadId=loadID, flags=flags)
 
             if response:
                 print('{}'.format(response.decode()))
@@ -1316,7 +1274,6 @@ class G2CmdShell(cmd.Cmd, object):
             printWithNewLine('Record replaced.')
         except G2Exception as err:
             print(err)
-
 
     def do_deleteRecord(self, arg):
         '\nDelete record:  deleteRecord <dataSourceCode> <recordID> [-l loadID]\n'
@@ -1336,7 +1293,6 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
     def do_deleteRecordWithInfo(self, arg):
         '\nDelete record with returned info:  deleteRecord <dataSourceCode> <recordID> [-l loadID -f flags]\n'
 
@@ -1355,7 +1311,7 @@ class G2CmdShell(cmd.Cmd, object):
                 flags = int(args.flags)
 
             response = bytearray()
-            self.g2_module.deleteRecordWithInfo(args.dataSourceCode,args.recordID,response,loadId=args.loadID,flags=flags)
+            self.g2_module.deleteRecordWithInfo(args.dataSourceCode, args.recordID, response, loadId=args.loadID, flags=flags)
 
             if response:
                 print('{}'.format(response.decode()))
@@ -1365,7 +1321,6 @@ class G2CmdShell(cmd.Cmd, object):
             printWithNewLine('Record deleted.')
         except G2Exception as err:
             print(err)
-
 
     def do_searchByAttributes(self, arg):
         '\nSearch by attributes:  searchByAttributes <jsonData>\n'
@@ -1378,14 +1333,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.searchByAttributes(args.jsonData,response)
+            self.g2_module.searchByAttributes(args.jsonData, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_searchByAttributesV2(self, arg):
         '\nSearch by attributes:  searchByAttributesV2 <jsonData> <flags>\n'
@@ -1398,14 +1352,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.searchByAttributesV2(args.jsonData,args.flags,response)
+            self.g2_module.searchByAttributesV2(args.jsonData, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_getEntityByEntityID(self, arg):
         '\nGet entity by resolved entity ID:  getEntityByEntityID <entityID>\n'
@@ -1426,7 +1379,6 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
     def do_getEntityByEntityIDV2(self, arg):
         '\nGet entity by resolved entity ID:  getEntityByEntityIDV2 <entityID> <flags>\n'
 
@@ -1438,7 +1390,7 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.getEntityByEntityIDV2(args.entityID,args.flags,response)
+            self.g2_module.getEntityByEntityIDV2(args.entityID, args.flags, response)
 
             if response:
                 print('{}'.format(response.decode()))
@@ -1446,7 +1398,6 @@ class G2CmdShell(cmd.Cmd, object):
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findInterestingEntitiesByEntityID(self, arg):
         '\nFind interesting entities close to entity by resolved entity ID:  findInterestingEntitiesByEntityID <entityID> <flags>\n'
@@ -1459,7 +1410,7 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findInterestingEntitiesByEntityID(args.entityID,args.flags,response)
+            self.g2_module.findInterestingEntitiesByEntityID(args.entityID, args.flags, response)
 
             if response:
                 print('{}'.format(response.decode()))
@@ -1467,7 +1418,6 @@ class G2CmdShell(cmd.Cmd, object):
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findInterestingEntitiesByRecordID(self, arg):
         '\nFind interesting entities close to entity by record ID:  findInterestingEntitiesByRecordID <dataSourceCode> <recordID> <flags>\n'
@@ -1480,14 +1430,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findInterestingEntitiesByRecordID(args.dataSourceCode, args.recordID, args.flags,response)
+            self.g2_module.findInterestingEntitiesByRecordID(args.dataSourceCode, args.recordID, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findPathByEntityID(self, arg):
         '\nFind path between two entities:  findPathByEntityID <startEntityID> <endEntityID> <maxDegree>\n'
@@ -1500,14 +1449,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findPathByEntityID(args.startEntityID,args.endEntityID,args.maxDegree,response)
+            self.g2_module.findPathByEntityID(args.startEntityID, args.endEntityID, args.maxDegree, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findPathByEntityIDV2(self, arg):
         '\nFind path between two entities:  findPathByEntityIDV2 <startEntityID> <endEntityID> <maxDegree> <flags>\n'
@@ -1520,14 +1468,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findPathByEntityIDV2(args.startEntityID,args.endEntityID,args.maxDegree,args.flags,response)
+            self.g2_module.findPathByEntityIDV2(args.startEntityID, args.endEntityID, args.maxDegree, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findNetworkByEntityID(self, arg):
         '\nFind network between entities:  findNetworkByEntityID <entityList> <maxDegree> <buildOutDegree> <maxEntities>\n'
@@ -1540,14 +1487,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findNetworkByEntityID(args.entityList,args.maxDegree,args.buildOutDegree,args.maxEntities,response)
+            self.g2_module.findNetworkByEntityID(args.entityList, args.maxDegree, args.buildOutDegree, args.maxEntities, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findNetworkByEntityIDV2(self, arg):
         '\nFind network between entities:  findNetworkByEntityIDV2 <entityList> <maxDegree> <buildOutDegree> <maxEntities> <flags>\n'
@@ -1560,14 +1506,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findNetworkByEntityIDV2(args.entityList,args.maxDegree,args.buildOutDegree,args.maxEntities,args.flags,response)
+            self.g2_module.findNetworkByEntityIDV2(args.entityList, args.maxDegree, args.buildOutDegree, args.maxEntities, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findPathExcludingByEntityID(self, arg):
         '\nFind path between two entities, with exclusions:  findPathExcludingByEntityID <startEntityID> <endEntityID> <maxDegree> <excludedEntities>\n'
@@ -1580,14 +1525,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findPathExcludingByEntityID(args.startEntityID,args.endEntityID,args.maxDegree,args.excludedEntities,response)
+            self.g2_module.findPathExcludingByEntityID(args.startEntityID, args.endEntityID, args.maxDegree, args.excludedEntities, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findPathExcludingByEntityIDV2(self, arg):
         '\nFind path between two entities, with exclusions:  findPathExcludingByEntityIDV2 <startEntityID> <endEntityID> <maxDegree> <excludedEntities> <flags>\n'
@@ -1600,14 +1544,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findPathExcludingByEntityIDV2(args.startEntityID,args.endEntityID,args.maxDegree,args.excludedEntities,args.flags,response)
+            self.g2_module.findPathExcludingByEntityIDV2(args.startEntityID, args.endEntityID, args.maxDegree, args.excludedEntities, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findPathIncludingSourceByEntityID(self, arg):
         '\nFind path between two entities that includes a watched dsrc list, with exclusions:  findPathIncludingSourceByEntityID <startEntityID> <endEntityID> <maxDegree> <excludedEntities> <requiredDsrcs>\n'
@@ -1620,14 +1563,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findPathIncludingSourceByEntityID(args.startEntityID,args.endEntityID,args.maxDegree,args.excludedEntities,args.requiredDsrcs,response)
+            self.g2_module.findPathIncludingSourceByEntityID(args.startEntityID, args.endEntityID, args.maxDegree, args.excludedEntities, args.requiredDsrcs, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findPathIncludingSourceByEntityIDV2(self, arg):
         '\nFind path between two entities that includes a watched dsrc list, with exclusions:  findPathIncludingSourceByEntityIDV2 <startEntityID> <endEntityID> <maxDegree> <excludedEntities> <requiredDsrcs> <flags>\n'
@@ -1640,14 +1582,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findPathIncludingSourceByEntityIDV2(args.startEntityID,args.endEntityID,args.maxDegree,args.excludedEntities,args.requiredDsrcs,args.flags,response)
+            self.g2_module.findPathIncludingSourceByEntityIDV2(args.startEntityID, args.endEntityID, args.maxDegree, args.excludedEntities, args.requiredDsrcs, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_getEntityByRecordID(self, arg):
         '\nGet entity by record ID:  getEntityByRecordID <dataSourceCode> <recordID>\n'
@@ -1660,14 +1601,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.getEntityByRecordID(args.dataSourceCode, args.recordID,response)
+            self.g2_module.getEntityByRecordID(args.dataSourceCode, args.recordID, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_getEntityByRecordIDV2(self, arg):
         '\nGet entity by record ID:  getEntityByRecordIDV2 <dataSourceCode> <recordID> <flags>\n'
@@ -1680,14 +1620,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.getEntityByRecordIDV2(args.dataSourceCode, args.recordID, args.flags,response)
+            self.g2_module.getEntityByRecordIDV2(args.dataSourceCode, args.recordID, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findPathByRecordID(self, arg):
         '\nFind path between two records:  findPathByRecordID <startDataSourceCode> <startRecordID> <endDataSourceCode> <endRecordID> <maxDegree>\n'
@@ -1700,14 +1639,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findPathByRecordID(args.startDataSourceCode,args.startRecordID,args.endDataSourceCode,args.endRecordID,args.maxDegree,response)
+            self.g2_module.findPathByRecordID(args.startDataSourceCode, args.startRecordID, args.endDataSourceCode, args.endRecordID, args.maxDegree, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findPathByRecordIDV2(self, arg):
         '\nFind path between two records:  findPathByRecordIDV2 <startDataSourceCode> <startRecordID> <endDataSourceCode> <endRecordID> <maxDegree> <flags>\n'
@@ -1720,14 +1658,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findPathByRecordIDV2(args.startDataSourceCode,args.startRecordID,args.endDataSourceCode,args.endRecordID,args.maxDegree,args.flags,response)
+            self.g2_module.findPathByRecordIDV2(args.startDataSourceCode, args.startRecordID, args.endDataSourceCode, args.endRecordID, args.maxDegree, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findNetworkByRecordID(self, arg):
         '\nFind network between records:  findNetworkByRecordID <recordList> <maxDegree> <buildOutDegree> <maxEntities>\n'
@@ -1740,14 +1677,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findNetworkByRecordID(args.recordList,args.maxDegree,args.buildOutDegree,args.maxEntities,response)
+            self.g2_module.findNetworkByRecordID(args.recordList, args.maxDegree, args.buildOutDegree, args.maxEntities, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findNetworkByRecordIDV2(self, arg):
         '\nFind network between records:  findNetworkByRecordIDV2 <recordList> <maxDegree> <buildOutDegree> <maxEntities> <flags>\n'
@@ -1760,14 +1696,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findNetworkByRecordIDV2(args.recordList,args.maxDegree,args.buildOutDegree,args.maxEntities,args.flags,response)
+            self.g2_module.findNetworkByRecordIDV2(args.recordList, args.maxDegree, args.buildOutDegree, args.maxEntities, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_whyEntityByRecordID(self, arg):
         '\nDetermine why a record is inside its entity:  whyEntityByRecordID <dataSourceCode> <recordID>\n'
@@ -1780,14 +1715,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.whyEntityByRecordID(args.dataSourceCode,args.recordID,response)
+            self.g2_module.whyEntityByRecordID(args.dataSourceCode, args.recordID, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_whyEntityByRecordIDV2(self, arg):
         '\nDetermine why a record is inside its entity:  whyEntityByRecordIDV2 <dataSourceCode> <recordID> <flags>\n'
@@ -1800,14 +1734,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.whyEntityByRecordIDV2(args.dataSourceCode,args.recordID,args.flags,response)
+            self.g2_module.whyEntityByRecordIDV2(args.dataSourceCode, args.recordID, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_whyEntityByEntityID(self, arg):
         '\nDetermine why records are inside an entity:  whyEntityByEntityID <entityID>\n'
@@ -1820,14 +1753,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.whyEntityByEntityID(args.entityID,response)
+            self.g2_module.whyEntityByEntityID(args.entityID, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_whyEntityByEntityIDV2(self, arg):
         '\nDetermine why records are inside an entity:  whyEntityByEntityIDV2 <entityID> <flags>\n'
@@ -1840,14 +1772,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.whyEntityByEntityIDV2(args.entityID,args.flags,response)
+            self.g2_module.whyEntityByEntityIDV2(args.entityID, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_howEntityByEntityID(self, arg):
         '\nRetrieve information on how entities are constructed from their base records:  howEntityByEntityID <entityID>\n'
@@ -1860,14 +1791,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.howEntityByEntityID(args.entityID,response)
+            self.g2_module.howEntityByEntityID(args.entityID, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_howEntityByEntityIDV2(self, arg):
         '\nRetrieve information on how entities are constructed from their base records:  howEntityByEntityIDV2 <entityID> <flags>\n'
@@ -1880,14 +1810,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.howEntityByEntityIDV2(args.entityID,args.flags,response)
+            self.g2_module.howEntityByEntityIDV2(args.entityID, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_getVirtualEntityByRecordID(self, arg):
         '\nDetermine how an entity composed of a given set of records would look:  getVirtualEntityByRecordID <recordList>\n'
@@ -1900,14 +1829,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.getVirtualEntityByRecordID(args.recordList,response)
+            self.g2_module.getVirtualEntityByRecordID(args.recordList, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_getVirtualEntityByRecordIDV2(self, arg):
         '\nDetermine how an entity composed of a given set of records would look:  getVirtualEntityByRecordIDV2 <recordList> <flags>\n'
@@ -1920,14 +1848,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.getVirtualEntityByRecordIDV2(args.recordList,args.flags,response)
+            self.g2_module.getVirtualEntityByRecordIDV2(args.recordList, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_whyEntities(self, arg):
         '\nDetermine how entities relate to each other:  whyEntities <entityID1> <entityID2>\n'
@@ -1940,14 +1867,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.whyEntities(args.entityID1,args.entityID2,response)
+            self.g2_module.whyEntities(args.entityID1, args.entityID2, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_whyEntitiesV2(self, arg):
         '\nDetermine how entities relate to each other:  whyEntitiesV2 <entityID1> <entityID2> <flags>\n'
@@ -1960,14 +1886,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.whyEntitiesV2(args.entityID1,args.entityID2,args.flags,response)
+            self.g2_module.whyEntitiesV2(args.entityID1, args.entityID2, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_whyRecords(self, arg):
         '\nDetermine how two records relate to each other:  whyRecords <dataSourceCode1> <recordID1> <dataSourceCode2> <recordID2>\n'
@@ -1980,14 +1905,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.whyRecords(args.dataSourceCode1,args.recordID1,args.dataSourceCode2,args.recordID2,response)
+            self.g2_module.whyRecords(args.dataSourceCode1, args.recordID1, args.dataSourceCode2, args.recordID2, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_whyRecordsV2(self, arg):
         '\nDetermine how two records relate to each other:  whyRecordsV2 <dataSourceCode1> <recordID1> <dataSourceCode2> <recordID2> <flags>\n'
@@ -2000,14 +1924,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.whyRecordsV2(args.dataSourceCode1,args.recordID1,args.dataSourceCode2,args.recordID2,args.flags,response)
+            self.g2_module.whyRecordsV2(args.dataSourceCode1, args.recordID1, args.dataSourceCode2, args.recordID2, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findPathExcludingByRecordID(self, arg):
         '\nFind path between two records, with exclusions:  findPathExcludingByRecordID <startDataSourceCode> <startRecordID> <endDataSourceCode> <endRecordID> <maxDegree> <excludedEntities>\n'
@@ -2020,14 +1943,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findPathExcludingByRecordID(args.startDataSourceCode,args.startRecordID,args.endDataSourceCode,args.endRecordID,args.maxDegree,args.excludedEntities,response)
+            self.g2_module.findPathExcludingByRecordID(args.startDataSourceCode, args.startRecordID, args.endDataSourceCode, args.endRecordID, args.maxDegree, args.excludedEntities, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findPathExcludingByRecordIDV2(self, arg):
         '\nFind path between two records, with exclusions:  findPathExcludingByRecordIDV2 <startDataSourceCode> <startRecordID> <endDataSourceCode> <endRecordID> <maxDegree> <excludedEntities> <flags>\n'
@@ -2040,14 +1962,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findPathExcludingByRecordIDV2(args.startDataSourceCode,args.startRecordID,args.endDataSourceCode,args.endRecordID,args.maxDegree,args.excludedEntities,args.flags,response)
+            self.g2_module.findPathExcludingByRecordIDV2(args.startDataSourceCode, args.startRecordID, args.endDataSourceCode, args.endRecordID, args.maxDegree, args.excludedEntities, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findPathIncludingSourceByRecordID(self, arg):
         '\nFind path between two records that includes a watched dsrc list, with exclusions:  findPathIncludingSourceByRecordID <startDataSourceCode> <startRecordID> <endDataSourceCode> <endRecordID> <maxDegree> <excludedEntities> <requiredDsrcs>\n'
@@ -2060,14 +1981,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findPathIncludingSourceByRecordID(args.startDataSourceCode,args.startRecordID,args.endDataSourceCode,args.endRecordID,args.maxDegree,args.excludedEntities,args.requiredDsrcs,response)
+            self.g2_module.findPathIncludingSourceByRecordID(args.startDataSourceCode, args.startRecordID, args.endDataSourceCode, args.endRecordID, args.maxDegree, args.excludedEntities, args.requiredDsrcs, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_findPathIncludingSourceByRecordIDV2(self, arg):
         '\nFind path between two records that includes a watched dsrc list, with exclusions:  findPathIncludingSourceByRecordIDV2 <startDataSourceCode> <startRecordID> <endDataSourceCode> <endRecordID> <maxDegree> <excludedEntities> <requiredDsrcs> <flags>\n'
@@ -2080,14 +2000,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.findPathIncludingSourceByRecordIDV2(args.startDataSourceCode,args.startRecordID,args.endDataSourceCode,args.endRecordID,args.maxDegree,args.excludedEntities,args.requiredDsrcs,args.flags,response)
+            self.g2_module.findPathIncludingSourceByRecordIDV2(args.startDataSourceCode, args.startRecordID, args.endDataSourceCode, args.endRecordID, args.maxDegree, args.excludedEntities, args.requiredDsrcs, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_getRecord(self, arg):
         '\nGet record for record ID :  getRecord <dataSourceCode> <recordID>\n'
@@ -2100,14 +2019,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.getRecord(args.dataSourceCode, args.recordID,response)
+            self.g2_module.getRecord(args.dataSourceCode, args.recordID, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_getRecordV2(self, arg):
         '\nGet record for record ID :  getRecordV2 <dataSourceCode> <recordID> <flags>\n'
@@ -2120,7 +2038,7 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_module.getRecordV2(args.dataSourceCode, args.recordID, args.flags,response)
+            self.g2_module.getRecordV2(args.dataSourceCode, args.recordID, args.flags, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -2128,8 +2046,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
-    def do_countRedoRecords(self,arg):
+    def do_countRedoRecords(self, arg):
         '\nCounts the number of records in the redo queue:  countRedoRecords\n'
 
         try:
@@ -2137,7 +2054,6 @@ class G2CmdShell(cmd.Cmd, object):
             print('Record Count: %d' % recordCount)
         except G2Exception as err:
             print(err)
-
 
     def do_processRedoRecord(self, arg):
         '\nProcess a redo record:  processRedoRecord <recordID>\n'
@@ -2151,7 +2067,6 @@ class G2CmdShell(cmd.Cmd, object):
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_processRedoRecordWithInfo(self, arg):
         '\nProcess a redo record with returned info:  processRedoRecordWithInfo <recordID> [-f <flags>]\n'
@@ -2181,7 +2096,6 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
     def do_getEntityDetails(self, arg):
         '\nGet the profile of a resolved entity:  getEntityDetails -e <entityID> [-d]\n'
 
@@ -2192,14 +2106,13 @@ class G2CmdShell(cmd.Cmd, object):
             return
         try:
             response = bytearray()
-            self.g2_diagnostic_module.getEntityDetails(args.entityID,args.includeInternalFeatures,response)
+            self.g2_diagnostic_module.getEntityDetails(args.entityID, args.includeInternalFeatures, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_getRelationshipDetails(self, arg):
         '\nGet the profile of a relationship:  getRelationshipDetails -r <relationshipID> [-d]\n'
@@ -2212,14 +2125,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_diagnostic_module.getRelationshipDetails(args.relationshipID,args.includeInternalFeatures,response)
+            self.g2_diagnostic_module.getRelationshipDetails(args.relationshipID, args.includeInternalFeatures, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_getEntityResume(self, arg):
         '\nGet the related records for a resolved entity:  getEntityResume <entityID>\n'
@@ -2232,14 +2144,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_diagnostic_module.getEntityResume(args.entityID,response)
+            self.g2_diagnostic_module.getEntityResume(args.entityID, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_getEntityListBySize(self, arg):
         '\nGet list of resolved entities of specified size:  getEntityListBySize -s <entitySize> [-o <output_file>]\n'
@@ -2251,12 +2162,12 @@ class G2CmdShell(cmd.Cmd, object):
         try:
             sizedEntityHandle = self.g2_diagnostic_module.getEntityListBySize(args.entitySize)
             response = bytearray()
-            rowData = self.g2_diagnostic_module.fetchNextEntityBySize(sizedEntityHandle,response)
+            rowData = self.g2_diagnostic_module.fetchNextEntityBySize(sizedEntityHandle, response)
             resultString = b""
             while rowData:
                 resultString += response
                 response = bytearray()
-                rowData = self.g2_diagnostic_module.fetchNextEntityBySize(sizedEntityHandle,response)
+                rowData = self.g2_diagnostic_module.fetchNextEntityBySize(sizedEntityHandle, response)
             self.g2_diagnostic_module.closeEntityListBySize(sizedEntityHandle)
             if args.outputFile:
                 with open(args.outputFile, 'w') as data_out:
@@ -2266,8 +2177,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
-    def do_checkDBPerf(self,arg):
+    def do_checkDBPerf(self, arg):
         '\nRun a check on the DB performance:  checkDBPerf\n'
 
         try:
@@ -2278,13 +2188,12 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_diagnostic_module.checkDBPerf(args.secondsToRun,response)
+            self.g2_diagnostic_module.checkDBPerf(args.secondsToRun, response)
             print('{}'.format(response.decode()))
         except G2Exception as err:
             print(err)
 
-
-    def do_getDataSourceCounts(self,arg):
+    def do_getDataSourceCounts(self, arg):
         '\nGet record counts by data source and entity type:  getDataSourceCounts\n'
 
         try:
@@ -2294,8 +2203,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
-    def do_getMappingStatistics(self,arg):
+    def do_getMappingStatistics(self, arg):
         '\nGet data source mapping statistics:  getMappingStatistics [-d]\n'
 
         try:
@@ -2306,13 +2214,12 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_diagnostic_module.getMappingStatistics(args.includeInternalFeatures,response)
+            self.g2_diagnostic_module.getMappingStatistics(args.includeInternalFeatures, response)
             print('{}'.format(response.decode()))
         except G2Exception as err:
             print(err)
 
-
-    def do_getGenericFeatures(self,arg):
+    def do_getGenericFeatures(self, arg):
         '\nGet a list of generic values for a feature type:  getGenericFeatures [-t <featureType>] [-m <maximumEstimatedCount>]\n'
 
         try:
@@ -2323,13 +2230,12 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_diagnostic_module.getGenericFeatures(args.featureType,args.maximumEstimatedCount,response)
+            self.g2_diagnostic_module.getGenericFeatures(args.featureType, args.maximumEstimatedCount, response)
             print('{}'.format(response.decode()))
         except G2Exception as err:
             print(err)
 
-
-    def do_getEntitySizeBreakdown(self,arg):
+    def do_getEntitySizeBreakdown(self, arg):
         '\nGet the number of entities of each entity size:  getEntitySizeBreakdown [-m <minimumEntitySize>] [-d]\n'
 
         try:
@@ -2340,13 +2246,12 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_diagnostic_module.getEntitySizeBreakdown(args.minimumEntitySize,args.includeInternalFeatures,response)
+            self.g2_diagnostic_module.getEntitySizeBreakdown(args.minimumEntitySize, args.includeInternalFeatures, response)
             print('{}'.format(response.decode()))
         except G2Exception as err:
             print(err)
 
-
-    def do_getFeature(self,arg):
+    def do_getFeature(self, arg):
         '\nGet information of a feature:  getFeature [-f <featureID>]\n'
 
         try:
@@ -2357,13 +2262,12 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_diagnostic_module.getFeature(args.featureID,response)
+            self.g2_diagnostic_module.getFeature(args.featureID, response)
             print('{}'.format(response.decode()))
         except G2Exception as err:
             print(err)
 
-
-    def do_getResolutionStatistics(self,arg):
+    def do_getResolutionStatistics(self, arg):
         '\nGet resolution statistics:  getResolutionStatistics\n'
 
         try:
@@ -2372,7 +2276,6 @@ class G2CmdShell(cmd.Cmd, object):
             print('{}'.format(response.decode()))
         except G2Exception as err:
             print(err)
-
 
     def do_findEntitiesByFeatureIDs(self, arg):
         '\nGet the entities for a list of features:  findEntitiesByFeatureIDs <json_data>\n'
@@ -2385,7 +2288,7 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_diagnostic_module.findEntitiesByFeatureIDs(args.features,response)
+            self.g2_diagnostic_module.findEntitiesByFeatureIDs(args.features, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
@@ -2393,8 +2296,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
-    def do_stats(self,arg):
+    def do_stats(self, arg):
         '\nGet engine workload statistics for last process:  stats\n'
 
         try:
@@ -2404,8 +2306,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
-    def do_exportConfig(self,arg):
+    def do_exportConfig(self, arg):
         '\nExport the config:  exportConfig [-o <output_file>]\n'
 
         try:
@@ -2417,18 +2318,17 @@ class G2CmdShell(cmd.Cmd, object):
         try:
             response = bytearray()
             configID = bytearray()
-            self.g2_module.exportConfig(response,configID)
+            self.g2_module.exportConfig(response, configID)
             responseMsg = json.loads(response)
             if args.outputFile:
                 with open(args.outputFile, 'w') as data_out:
-                    json.dump(responseMsg,data_out)
+                    json.dump(responseMsg, data_out)
             else:
                 printResponse(json.dumps(responseMsg))
         except G2Exception as err:
             print(err)
 
-
-    def do_getActiveConfigID(self,arg):
+    def do_getActiveConfigID(self, arg):
         '\nGet the config identifier:  getActiveConfigID\n'
 
         try:
@@ -2438,8 +2338,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
-    def do_getRepositoryLastModifiedTime(self,arg):
+    def do_getRepositoryLastModifiedTime(self, arg):
         '\nGet the last modified time of the datastore:  getRepositoryLastModifiedTime\n'
 
         try:
@@ -2449,8 +2348,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
-    def do_exportTokenLibrary(self,arg):
+    def do_exportTokenLibrary(self, arg):
         '\nExport the token library:  exportTokenLibrary [-o <output_file>]\n'
 
         try:
@@ -2465,12 +2363,11 @@ class G2CmdShell(cmd.Cmd, object):
             responseMsg = json.loads(response)
             if args.outputFile:
                 with open(args.outputFile, 'w') as data_out:
-                    json.dump(responseMsg,data_out)
+                    json.dump(responseMsg, data_out)
             else:
                 printResponse(json.dumps(responseMsg))
         except G2Exception as err:
             print(err)
-
 
     def do_purgeRepository(self, arg):
 
@@ -2484,7 +2381,7 @@ class G2CmdShell(cmd.Cmd, object):
         try:
             args = self.parser.parse_args(['purgeRepository'] + parse(arg))
             if not args.forcePurge:
-                if input('\n*** This will purge all currently loaded data from the Senzing repository! ***\n\nAre you sure? (y/n)  ') not in ['y','Y', 'yes', 'YES']:
+                if input('\n*** This will purge all currently loaded data from the Senzing repository! ***\n\nAre you sure? (y/n)  ') not in ['y', 'Y', 'yes', 'YES']:
                     print()
                     return
             else:
@@ -2498,7 +2395,7 @@ class G2CmdShell(cmd.Cmd, object):
             reset_resolver = False
             resolver_txt = '(without resetting resolver)'
         else:
-            reset_resolver=True
+            reset_resolver = True
             resolver_txt = '(and resetting resolver)'
 
         printWithNewLines(f'Purging the repository {resolver_txt}', 'B')
@@ -2507,7 +2404,6 @@ class G2CmdShell(cmd.Cmd, object):
             self.g2_module.purgeRepository(reset_resolver)
         except G2Exception as err:
             printWithNewLines(f'G2Exception: {err}', 'B')
-
 
     def do_hashRecord(self, arg):
         '\nHash an entity record:  hashRecord <json_data>\n'
@@ -2520,14 +2416,13 @@ class G2CmdShell(cmd.Cmd, object):
 
         try:
             response = bytearray()
-            self.g2_hasher_module.process(args.jsonData,response)
+            self.g2_hasher_module.process(args.jsonData, response)
             if response:
                 print('{}'.format(response.decode()))
             else:
                 print('\nNo response!\n')
         except G2Exception as err:
             print(err)
-
 
     def do_hashFile(self, arg):
         '\nHash a file of entity records:  hashFile <input_file> [-o <output_file>]\n'
@@ -2545,22 +2440,21 @@ class G2CmdShell(cmd.Cmd, object):
                     with open(args.inputFile.split("?")[0]) as data_in:
                         for line in data_in:
                             response = bytearray()
-                            self.g2_hasher_module.process(line.strip(),response)
+                            self.g2_hasher_module.process(line.strip(), response)
                             hashedData = response.decode()
                             data_out.write(hashedData)
                             data_out.write('\n')
             else:
-                with open(args.inputFile.split("?")[0]) as data_in :
+                with open(args.inputFile.split("?")[0]) as data_in:
                     for line in data_in:
                         response = bytearray()
-                        self.g2_hasher_module.process(line.strip(),response)
+                        self.g2_hasher_module.process(line.strip(), response)
                         hashedData = response.decode()
                         printWithNewLine(hashedData)
         except G2Exception as err:
             print(err)
 
-
-    def do_license(self,arg):
+    def do_license(self, arg):
         '\nGet the license information:  license\n'
 
         try:
@@ -2569,8 +2463,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             printWithNewLines(f'G2Exception: {err}', 'B')
 
-
-    def do_validateLicenseFile(self,arg):
+    def do_validateLicenseFile(self, arg):
         '\nValidate a license file:  validateLicenseFile <licenseFilePath>\n'
 
         try:
@@ -2588,8 +2481,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
-    def do_validateLicenseStringBase64(self,arg):
+    def do_validateLicenseStringBase64(self, arg):
         '\nValidate a license string:  validateLicenseStringBase64 <licenseString>\n'
 
         try:
@@ -2607,8 +2499,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
-    def do_version(self,arg):
+    def do_version(self, arg):
         '\nGet the version information:  version\n'
 
         try:
@@ -2618,8 +2509,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
-    def do_getPhysicalCores(self,arg):
+    def do_getPhysicalCores(self, arg):
         '\nGet the number of physical cores:  getPhysicalCores\n'
 
         try:
@@ -2628,8 +2518,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
-    def do_getLogicalCores(self,arg):
+    def do_getLogicalCores(self, arg):
         '\nGet the number of logical cores:  getLogicalCores\n'
 
         try:
@@ -2638,8 +2527,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
-    def do_getTotalSystemMemory(self,arg):
+    def do_getTotalSystemMemory(self, arg):
         '\nGet the total system memory:  getTotalSystemMemory\n'
 
         try:
@@ -2648,8 +2536,7 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
-    def do_getAvailableMemory(self,arg):
+    def do_getAvailableMemory(self, arg):
         '\nGet the available memrory:  getAvailableMemory\n'
 
         try:
@@ -2658,18 +2545,17 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
 # ----- Non API call commands -----
 # ---- DO NOT docstring these! ----
 
     def do_histDedupe(self, arg):
 
         if self.histAvail:
-            if input('\nThis will de-duplicate both this session history and the history file, are you sure? (y/n)  ') in ['y','Y', 'yes', 'YES']:
+            if input('\nThis will de-duplicate both this session history and the history file, are you sure? (y/n)  ') in ['y', 'Y', 'yes', 'YES']:
 
                 with open(self.histFileName) as hf:
                     linesIn = (line.rstrip() for line in hf)
-                    uniqLines = OrderedDict.fromkeys( line for line in linesIn if line )
+                    uniqLines = OrderedDict.fromkeys(line for line in linesIn if line)
 
                     readline.clear_history()
                     for ul in uniqLines:
@@ -2681,11 +2567,10 @@ class G2CmdShell(cmd.Cmd, object):
         else:
             printWithNewLines('History isn\'t available in this session.', 'B')
 
-
     def do_histClear(self, arg):
 
         if self.histAvail:
-            if input('\nThis will clear both this session history and the history file, are you sure? (y/n)  ') in ['y','Y', 'yes', 'YES']:
+            if input('\nThis will clear both this session history and the history file, are you sure? (y/n)  ') in ['y', 'Y', 'yes', 'YES']:
                 readline.clear_history()
                 readline.write_history_file(self.histFileName)
                 printWithNewLines('Session history and history file both cleared.', 'B')
@@ -2693,7 +2578,6 @@ class G2CmdShell(cmd.Cmd, object):
                 print()
         else:
             printWithNewLines('History isn\'t available in this session.', 'B')
-
 
     def do_histShow(self, arg):
 
@@ -2705,24 +2589,19 @@ class G2CmdShell(cmd.Cmd, object):
         else:
             printWithNewLines('History isn\'t available in this session.', 'B')
 
-
     def do_restart(self, arg):
         self.restart = True
         return True
-
 
     def do_restartDebug(self, arg):
         self.restart_debug = True
         return True
 
-
     def ret_restart(self):
         return self.restart
 
-
     def ret_restart_debug(self):
         return self.restart_debug
-
 
     def do_timer(self, arg):
 
@@ -2733,13 +2612,14 @@ class G2CmdShell(cmd.Cmd, object):
             self.timerOn = True
             printWithNewLines('Timer is now on', 'B')
 
-
 # ----- Utility functions -----
+
 
 def parse(argumentString):
     'Parses an argument list into a logical set of argument strings'
 
     return shlex.split(argumentString)
+
 
 def printWithNewLine(arg):
     print(arg + '\n')
