@@ -94,8 +94,8 @@ class G2CmdShell(cmd.Cmd, object):
         interfaceName_parser.add_argument('interfaceName')
 
         searchByAttributesV2_parser = self.subparsers.add_parser('searchByAttributesV2', usage=argparse.SUPPRESS)
-        searchByAttributesV2_parser.add_argument('jsonData')
-        searchByAttributesV2_parser.add_argument('flags', type=int)
+        searchByAttributesV2_parser.add_argument('--jsonData')
+        searchByAttributesV2_parser.add_argument('--flags', type=int, required=False)
 
         processFile_parser = self.subparsers.add_parser('processFile', usage=argparse.SUPPRESS)
         processFile_parser.add_argument('inputFile')
@@ -112,7 +112,7 @@ class G2CmdShell(cmd.Cmd, object):
 
         processWithResponse_parser = self.subparsers.add_parser('processWithResponse',  usage=argparse.SUPPRESS)
         processWithResponse_parser.add_argument('jsonData')
-        processWithResponse_parser.add_argument('-o', '--outputFile', required=False)
+        processWithResponse_parser.add_argument('-o', '--outputFile')
 
         exportEntityReport_parser = self.subparsers.add_parser('exportEntityReport', usage=argparse.SUPPRESS)
         exportEntityReport_parser.add_argument('-f', '--flags', required=True, default=0, type=int)
@@ -1366,39 +1366,21 @@ class G2CmdShell(cmd.Cmd, object):
         except G2Exception as err:
             print(err)
 
-
     def do_searchByAttributes(self, arg):
-        '\nSearch by attributes:  searchByAttributes <jsonData>\n'
+        '\nSearch by attributes:  searchByAttributes <jsonData> <flags>\n'
 
         try:
-            args = self.parser.parse_args(['jsonOnly'] + parse(arg))
+            args = self.parser.parse_args(['searchByAttributes'] + parse(arg))
         except SystemExit:
             print(self.do_searchByAttributes.__doc__)
             return
 
+        kwargs = {}
+        if args.flags:
+            kwargs['flags'] = args.flags
         try:
             response = bytearray()
-            self.g2_module.searchByAttributes(args.jsonData,response)
-            if response:
-                print('{}'.format(response.decode()))
-            else:
-                print('\nNo response!\n')
-        except G2Exception as err:
-            print(err)
-
-
-    def do_searchByAttributesV2(self, arg):
-        '\nSearch by attributes:  searchByAttributesV2 <jsonData> <flags>\n'
-
-        try:
-            args = self.parser.parse_args(['searchByAttributesV2'] + parse(arg))
-        except SystemExit:
-            print(self.do_searchByAttributesV2.__doc__)
-            return
-
-        try:
-            response = bytearray()
-            self.g2_module.searchByAttributesV2(args.jsonData,args.flags,response)
+            self.g2_module.searchByAttributes(args.jsonData,response,**kwargs)
             if response:
                 print('{}'.format(response.decode()))
             else:
