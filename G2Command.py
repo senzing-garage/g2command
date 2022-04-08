@@ -342,22 +342,25 @@ class G2CmdShell(cmd.Cmd, object):
 
         printWithNewLines('Initializing Senzing engines...', 'S')
 
+        exportedConfig = bytearray()
+        exportedConfigID = bytearray()
+
         try:
             self.g2_module.init('pyG2E', g2module_params, self.debug_trace)
+            self.g2_module.exportConfig(exportedConfig, exportedConfigID)
             self.g2_product_module.init('pyG2Product', g2module_params, self.debug_trace)
             self.g2_diagnostic_module.init('pyG2Diagnostic', g2module_params, self.debug_trace)
             self.g2_config_module.init('pyG2Config', g2module_params, self.debug_trace)
             self.g2_configmgr_module.init('pyG2ConfigMgr', g2module_params, self.debug_trace)
+            self.g2_hasher_module.initWithConfig('pyG2Hasher', g2module_params, exportedConfig, self.debug_trace)
         except G2Exception as ex:
             printWithNewLines(f'ERROR: {ex}', 'B')
             # Clean up before exiting
             self.postloop()
             sys.exit(1)
-
-        exportedConfig = bytearray()
-        exportedConfigID = bytearray()
-        self.g2_module.exportConfig(exportedConfig, exportedConfigID)
-        self.g2_hasher_module.initWithConfig('pyG2Hasher', g2module_params, exportedConfig, self.debug_trace)
+        except Exception as ex:
+            printWithNewLines(f'ERROR: {ex}', 'B')
+            sys.exit(1)
 
         self.initialized = True
         printWithNewLines('Welcome to G2Command. Type help or ? to list commands.', 'B')
