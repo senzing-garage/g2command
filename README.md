@@ -1,4 +1,4 @@
-# docker-g2command
+# g2command
 
 ## Overview
 
@@ -215,7 +215,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/main/
 
     ```console
     export GIT_ACCOUNT=senzing
-    export GIT_REPOSITORY=docker-g2command
+    export GIT_REPOSITORY=g2command
     export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
     export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
     ```
@@ -227,7 +227,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/main/
 1. **Option #1:** Using `docker` command and GitHub.
 
     ```console
-    sudo docker build --tag senzing/g2command https://github.com/senzing/docker-g2command.git#main
+    sudo docker build --tag senzing/g2command https://github.com/senzing/g2command.git#main
     ```
 
 1. **Option #2:** Using `docker` command and local repository.

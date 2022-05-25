@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.3] - 2022-05-25
+
+### Added to 2.0.3
+
+- Migrate Dockerfile from [docker-g2command](https://github.com/Senzing/docker-g2command) to this repository
+
 ## [2.0.2] - 2022-05-19
 
 ### Added to 2.0.2
