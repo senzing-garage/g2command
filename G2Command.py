@@ -2456,7 +2456,7 @@ if __name__ == '__main__':
     restart = False
 
 
-    # Check for iniFile flag
+    # Check for G2Module.ini command line argument
     if args.iniFile:
 
         ini_file_name = pathlib.Path(args.iniFile[0])
@@ -2464,10 +2464,12 @@ if __name__ == '__main__':
         iniParamCreator = G2IniParams()
         g2module_params = iniParamCreator.getJsonINIParams(ini_file_name)
         
+    # Check for environment variable
     elif os.getenv("SENZING_ENGINE_CONFIGURATION_JSON"):
 
         g2module_params = os.getenv("SENZING_ENGINE_CONFIGURATION_JSON")
         
+    # Use default config
     else:
 
         ini_file_name = pathlib.Path(G2Paths.get_G2Module_ini_path())
