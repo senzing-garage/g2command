@@ -16,8 +16,8 @@ from timeit import default_timer as timer
 
 import G2Paths
 
-from senzing import G2Config, G2ConfigMgr, G2Diagnostic, G2Engine, G2Exception, G2Hasher, G2ModuleGenericException, G2Product
-from G2IniParams import G2IniParams
+from senzing import G2Config, G2ConfigMgr, G2Diagnostic, G2Engine, G2Exception, G2Hasher, G2ModuleGenericException, G2Product, G2IniParams
+#from G2IniParams import G2IniParams
 
 try:
     import readline
@@ -2455,37 +2455,27 @@ if __name__ == '__main__':
     first_loop = True
     restart = False
 
+
     # Check for iniFile flag
-    if iniFile:
-        
-        ini_file_name = pathlib.Path(args.iniFile())
-        print(ini_file_name)
+    if args.iniFile:
+
+        ini_file_name = pathlib.Path(args.iniFile[0])
         G2Paths.check_file_exists_and_readable(ini_file_name)
         iniParamCreator = G2IniParams()
         g2module_params = iniParamCreator.getJsonINIParams(ini_file_name)
         
     elif os.getenv("SENZING_ENGINE_CONFIGURATION_JSON"):
-        
+
         g2module_params = os.getenv("SENZING_ENGINE_CONFIGURATION_JSON")
         
     else:
-        
+
         ini_file_name = pathlib.Path(G2Paths.get_G2Module_ini_path())
-        print(ini_file_name)
         G2Paths.check_file_exists_and_readable(ini_file_name)
         iniParamCreator = G2IniParams()
         g2module_params = iniParamCreator.getJsonINIParams(ini_file_name)
         
-    print(g2module_params)
     exit()
-    
-    # If ini file isn't specified try and locate it with G2Paths
-    ini_file_name = pathlib.Path(G2Paths.get_G2Module_ini_path()) if not args.iniFile else pathlib.Path(args.iniFile[0]).resolve()
-    G2Paths.check_file_exists_and_readable(ini_file_name)
-
-    # Get the INI parameters to use
-    iniParamCreator = G2IniParams()
-    g2module_params = os.getenv("SENZING_ENGINE_CONFIGURATION_JSON", iniParamCreator.getJsonINIParams(ini_file_name))
 
     # Execute a file of commands
     if args.fileToProcess:
