@@ -2477,7 +2477,6 @@ if __name__ == '__main__':
         iniParamCreator = G2IniParams()
         g2module_params = iniParamCreator.getJsonINIParams(ini_file_name)
         
-    exit()
 
     # Execute a file of commands
     if args.fileToProcess:
