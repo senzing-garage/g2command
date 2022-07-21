@@ -25,4 +25,3 @@ USER 1001
 
 WORKDIR /opt/senzing/g2/python
 ENTRYPOINT ["/opt/senzing/g2/python/G2Command.py"]
-CMD ["-c", "/etc/opt/senzing/G2Module.ini"]
