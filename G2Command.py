@@ -2463,12 +2463,12 @@ if __name__ == '__main__':
         G2Paths.check_file_exists_and_readable(ini_file_name)
         iniParamCreator = G2IniParams()
         g2module_params = iniParamCreator.getJsonINIParams(ini_file_name)
-        
+
     # Check for environment variable
     elif os.getenv("SENZING_ENGINE_CONFIGURATION_JSON"):
 
         g2module_params = os.getenv("SENZING_ENGINE_CONFIGURATION_JSON")
-        
+
     # Use default config
     else:
 
@@ -2476,7 +2476,7 @@ if __name__ == '__main__':
         G2Paths.check_file_exists_and_readable(ini_file_name)
         iniParamCreator = G2IniParams()
         g2module_params = iniParamCreator.getJsonINIParams(ini_file_name)
-        
+
 
     # Execute a file of commands
     if args.fileToProcess:
