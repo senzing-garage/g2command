@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2022-08-04
+
+### Added in 2.1.0
+
+- Support for `SENZING_ENGINE_CONFIGURATION_JSON`
+
+### Deleted in 2.1.0
+
+- Dockerfile CMD instruction
+
 ## [2.0.5] - 2022-07-06
 
 ### Added to 2.0.5
