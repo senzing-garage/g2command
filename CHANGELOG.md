@@ -10,11 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added in 2.1.0
 
-- Added support for `SENZING_ENGINE_CONFIGURATION_JSON`
+- Support for `SENZING_ENGINE_CONFIGURATION_JSON`
 
 ### Deleted in 2.1.0
 
-- Removed Dockerfile CMD instruction
+- Dockerfile CMD instruction
 
 ## [2.0.5] - 2022-07-06
 
