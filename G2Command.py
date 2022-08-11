@@ -33,7 +33,7 @@ class G2CmdShell(cmd.Cmd, object):
         dotext = 'do_' + text
         return [a[3:] for a in self.get_names() if a.lower().startswith(dotext.lower())]
 
-    def __init__(self, debug_trace, hist_disable, ini_file=None):
+    def __init__(self, debug_trace, hist_disable):
 
         cmd.Cmd.__init__(self)
 
@@ -2475,7 +2475,7 @@ if __name__ == '__main__':
     # Execute a file of commands
     if args.fileToProcess:
 
-        cmd_obj = G2CmdShell(args.debugTrace, args.histDisable, ini_file_name)
+        cmd_obj = G2CmdShell(args.debugTrace, args.histDisable)
         cmd_obj.fileloop(args.fileToProcess)
 
     # Start command shell
@@ -2489,7 +2489,7 @@ if __name__ == '__main__':
             if 'cmd_obj' in locals() and cmd_obj.ret_quit():
                 break
 
-            cmd_obj = G2CmdShell(debug_trace, args.histDisable, ini_file_name)
+            cmd_obj = G2CmdShell(debug_trace, args.histDisable)
             cmd_obj.cmdloop()
 
             restart = True if cmd_obj.ret_restart() or cmd_obj.ret_restart_debug() else False
