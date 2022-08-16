@@ -2145,7 +2145,7 @@ class G2CmdShell(cmd.Cmd, object):
         try:
             args = self.parser.parse_args(['purgeRepository'] + parse(arg))
             if not args.forcePurge:
-                if input('\n*** This will purge all currently loaded data from the Senzing repository! ***\n\nAre you sure? (y/n)  ') not in ['y', 'Y', 'yes', 'YES']:
+                if input('\n*** This will purge all currently loaded data from the Senzing repository! Before proceeding all other instances of the Senzing API (custom code, Rest API, redoer, etc.) MUST be shut down. ***\n\nAre you sure? (y/n)  ') not in ['y', 'Y', 'yes', 'YES']:
                     print()
                     return
             else:
