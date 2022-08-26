@@ -1286,7 +1286,7 @@ class G2CmdShell(cmd.Cmd, object):
             print(err)
 
     def do_searchByAttributes(self, arg):
-        '\nSearch by attributes:  searchByAttributes -j <jsonData> [-f <flags>]\n'
+        '\nSearch by attributes:  searchByAttributes <jsonData> [-f <flags>]\n'
 
         try:
             args = self.parser.parse_args(['searchByAttributes'] + parse(arg))
