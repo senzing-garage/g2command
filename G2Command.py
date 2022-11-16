@@ -1003,6 +1003,16 @@ class G2CmdShell(cmd.Cmd, object):
 
         except G2Exception as err:
             print(err)
+            
+    def do_getDBInfo(self, arg):
+        '\nGet database information\n'
+
+        response = bytearray()
+        try:
+            self.g2_diagnostic_module.getDBInfo(response)
+            printWithNewLines(response.decode(), 'B')
+        except G2Exception as err:
+            print(err)
 
     def do_addRecord(self, arg):
         '\nAdd record:  addRecord <dataSourceCode> <recordID> <jsonData> [-l <loadID>]\n'
