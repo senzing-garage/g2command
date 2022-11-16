@@ -751,7 +751,6 @@ class G2CmdShell(cmd.Cmd, object):
                         jsonObj = dict(list(zip(csvHeaders, line)))
                         if dataSourceParm:
                             jsonObj['DATA_SOURCE'] = dataSourceParm
-                            jsonObj['ENTITY_TYPE'] = dataSourceParm
                         jsonStr = json.dumps(jsonObj)
 
                     self.g2_module.process(jsonStr)
