@@ -1003,7 +1003,7 @@ class G2CmdShell(cmd.Cmd, object):
 
         except G2Exception as err:
             print(err)
-            
+
     def do_getDBInfo(self, arg):
         '\nGet database information\n'
 
