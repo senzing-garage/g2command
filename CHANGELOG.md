@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed in 2.2.3
 
-- Remove reference to ENTITY_TYPE
+- Add getDBInfo command
 
 ## [2.2.2] - 2022-10-11
 
