@@ -751,7 +751,6 @@ class G2CmdShell(cmd.Cmd, object):
                         jsonObj = dict(list(zip(csvHeaders, line)))
                         if dataSourceParm:
                             jsonObj['DATA_SOURCE'] = dataSourceParm
-                            jsonObj['ENTITY_TYPE'] = dataSourceParm
                         jsonStr = json.dumps(jsonObj)
 
                     self.g2_module.process(jsonStr)
@@ -1002,6 +1001,16 @@ class G2CmdShell(cmd.Cmd, object):
             self.do_restart(None) if not self.debug_trace else self.do_restartDebug(None)
             return True
 
+        except G2Exception as err:
+            print(err)
+
+    def do_getDBInfo(self, arg):
+        '\nGet database information\n'
+
+        response = bytearray()
+        try:
+            self.g2_diagnostic_module.getDBInfo(response)
+            printWithNewLines(response.decode(), 'B')
         except G2Exception as err:
             print(err)
 
