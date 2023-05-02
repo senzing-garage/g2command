@@ -507,7 +507,8 @@ class G2CmdShell(cmd.Cmd, object):
         if not include_hidden:
             return [n for n in dir(self.__class__) if n not in self.__hidden_methods]
 
-        return [n for n in dir(self.__class__)]
+        ####return [n for n in dir(self.__class__)]
+        return list(dir(self.__class__))
 
     def preloop(self):
         if self.initialized:
@@ -653,28 +654,28 @@ class G2CmdShell(cmd.Cmd, object):
         if cli_args.colorDisable:
             print(textwrap.dedent(topic_docstring))
             return
-        else:
-            help_lines = textwrap.dedent(topic_docstring).split('\n')
 
-            for line in help_lines:
-                line_color = ''
-                if line:
-                    if line in headers:
-                        line_color = 'highlight2'
-                        current_section = line
+        help_lines = textwrap.dedent(topic_docstring).split('\n')
 
-                    if current_section == 'Caution:':
-                        line_color = 'caution, italics'
-                    elif current_section not in ('Syntax:', 'Examples:', 'Example:', 'Notes:', 'Arguments:'):
-                        line_color = ''
+        for line in help_lines:
+            line_color = ''
+            if line:
+                if line in headers:
+                    line_color = 'highlight2'
+                    current_section = line
 
-                if re.match(f'^\s*{help_topic[3:]}', line) and not line_color:
-                    sep_column = line.find(help_topic[3:]) + len(help_topic[3:])
-                    help_text += line[0:sep_column] + colorize(line[sep_column:], 'dim') + '\n'
-                else:
-                    help_text += colorize(line, line_color) + '\n'
+                if current_section == 'Caution:':
+                    line_color = 'caution, italics'
+                elif current_section not in ('Syntax:', 'Examples:', 'Example:', 'Notes:', 'Arguments:'):
+                    line_color = ''
 
-            print(help_text)
+            if re.match(fr'^\s*{help_topic[3:]}', line) and not line_color:
+                sep_column = line.find(help_topic[3:]) + len(help_topic[3:])
+                help_text += line[0:sep_column] + colorize(line[sep_column:], 'dim') + '\n'
+            else:
+                help_text += colorize(line, line_color) + '\n'
+
+        print(help_text)
 
     def help_all(self):
         cmd.Cmd.do_help(self, '')
@@ -2607,18 +2608,18 @@ class G2CmdShell(cmd.Cmd, object):
         except ModuleNotFoundError:
             pyperclip_clip_msg()
             return
-        else:
-            try:
-                # If __name__ doesn't exist no clipboard tool was available
-                _ = clip[0].__name__
-            except AttributeError:
-                pyperclip_clip_msg()
-                return
 
-            # This clipboard gets detected on Linux when xclip isn't installed, but it doesn't work
-            if clip[0].__name__ == 'copy_gi':
-                pyperclip_clip_msg()
-                return
+        try:
+            # If __name__ doesn't exist no clipboard tool was available
+            _ = clip[0].__name__
+        except AttributeError:
+            pyperclip_clip_msg()
+            return
+
+        # This clipboard gets detected on Linux when xclip isn't installed, but it doesn't work
+        if clip[0].__name__ == 'copy_gi':
+            pyperclip_clip_msg()
+            return
 
         try:
             pyperclip.copy(self.last_response)
@@ -2868,7 +2869,7 @@ class G2CmdShell(cmd.Cmd, object):
         """Auto complete engine flags from G2EngineFlags"""
 
         if re.match(".* -f +", line):
-            engine_flags_list = [flag for flag in G2EngineFlags.__members__.keys()]
+            engine_flags_list = list(G2EngineFlags.__members__.keys())
             return [flag for flag in engine_flags_list if flag.lower().startswith(text.lower())]
         return None
 
@@ -2925,13 +2926,13 @@ def get_engine_flags(flags_list):
     if len(flags_list) == 1 and flags_list[0].isnumeric():
         return int(flags_list[0])
     # Named engine flag(s) were used, combine when > 1
-    else:
-        try:
-            engine_flags_int = int(G2EngineFlags.combine_flags(flags_list))
-        except KeyError as err:
-            raise KeyError(f'Invalid engine flag: {err}')
 
-        return engine_flags_int
+    try:
+        engine_flags_int = int(G2EngineFlags.combine_flags(flags_list))
+    except KeyError as err:
+        raise KeyError(f'Invalid engine flag: {err}') from err
+
+    return engine_flags_int
 
 
 def colorize(in_string, color_list='None'):
