@@ -1,5 +1,6 @@
 [pylint]
 disable=
+    arguments-renamed,
     attribute-defined-outside-init,
     bad-option-value,
     broad-except,
