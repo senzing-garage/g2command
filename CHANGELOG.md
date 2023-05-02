@@ -6,6 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2023-05-02
+
+### Added in 2.3.0
+
+- Improved help and help for commands
+- Tab autocomplete for commands that specify files
+- Tab autocomplete for engine flags
+- Engine flags can now be specified as an int or their string names
+- JSON responses can now be formatted and changed between json and jsonl
+- JSON formatting adds color
+- Improved usage details on argument parsers
+- New CLI argument to disable color output
+- Can send last response message to clipboard or a file
+
+### Fixed in 2.3.0
+
+- exportJSONEntityReport & exportCSVEntityReport, could exhaust memory and abend
+- Replacing default config wasn't restarting engines
+- Misc fixes
+
 ## [2.2.4] - 2023-04-04
 
 ### Changed in 2.2.4
