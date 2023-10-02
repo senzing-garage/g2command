@@ -5,7 +5,7 @@ ENV REFRESHED_AT=2023-09-29
 
 LABEL Name="senzing/g2command" \
       Maintainer="support@senzing.com" \
-      Version="2.2.4"
+      Version="2.4.4"
 
 HEALTHCHECK CMD ["/app/healthcheck.sh"]
 
