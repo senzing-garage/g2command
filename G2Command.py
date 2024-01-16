@@ -281,7 +281,7 @@ class G2CmdShell(cmd.Cmd, object):
 
         # Only display can't read/write config message once, not at all in container
         self.config_error = 0
-        env_launched = os.getenv("SENZING_DOCKER_LAUNCHED", False)
+        env_launched = os.getenv("SENZING_DOCKER_LAUNCHED", None)
         self.docker_launched = (
             True if env_launched in ("y", "yes", "t", "true", "on", "1") else False
         )
