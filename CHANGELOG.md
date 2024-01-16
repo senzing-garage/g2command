@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2024-01-16
+
+### Added in 2.4.0
+
+- New modifier at end of commands to specify if colored JSON is required or not
+- New command to change if colored JSON is required or not for a session
+- New CLI arg to fully disable colored JSON for a session
+- Added the use of orjson module if it's available to increase JSON formatting performance of large response messsages
+- Added configuration file to store user preferences for JSON formatting and coloring across sessions
+- Additional help information
+
+### Fixed in 2.4.0
+
+- Greatly improved overall formatting performance of large JSON response messages
+- Fixed argument parsing bug in addRecordWithInfoWithReturnedRecordID and addRecordWithReturnedRecordID
+
 ## [2.3.5] - 2023-10-19
 
 ### Changed in 2.3.5
