@@ -135,7 +135,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added to 2.0.3
 
-- Migrate Dockerfile from [docker-g2command](https://github.com/Senzing/docker-g2command) to this repository
+- Migrate Dockerfile from [docker-g2command](https://github.com/senzing-garage/docker-g2command) to this repository
 
 ## [2.0.2] - 2022-05-19
 
