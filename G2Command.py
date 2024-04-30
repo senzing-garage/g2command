@@ -428,23 +428,6 @@ class G2CmdShell(cmd.Cmd, object):
         recordModify_parser.add_argument("recordID")
         recordModify_parser.add_argument("jsonData")
 
-        replaceRecord_parser = self.subparsers.add_parser(
-            "replaceRecord", usage=argparse.SUPPRESS
-        )
-        replaceRecord_parser.add_argument("dataSourceCode")
-        replaceRecord_parser.add_argument("recordID")
-        replaceRecord_parser.add_argument("jsonData")
-
-        replaceRecordWithInfo_parser = self.subparsers.add_parser(
-            "replaceRecordWithInfo", usage=argparse.SUPPRESS
-        )
-        replaceRecordWithInfo_parser.add_argument("dataSourceCode")
-        replaceRecordWithInfo_parser.add_argument("recordID")
-        replaceRecordWithInfo_parser.add_argument("jsonData")
-        replaceRecordWithInfo_parser.add_argument(
-            "-f", "--flags", required=False, nargs="+"
-        )
-
         addRecord_parser = self.subparsers.add_parser(
             "addRecord", usage=argparse.SUPPRESS
         )
@@ -1685,58 +1668,6 @@ class G2CmdShell(cmd.Cmd, object):
         self.printResponse(kwargs["response"])
 
     @cmd_decorator()
-    def do_replaceRecord(self, **kwargs):
-        """
-        Replace a record
-
-        Syntax:
-            replaceRecord DSRC_CODE RECORD_ID JSON_DATA
-
-        Example:
-            replaceRecord test 1 '{"NAME_FULL":"John Smith", "DATE_OF_BIRTH":"7/4/1976", "PHONE_NUMBER":"787-767-2088"}'
-
-        Arguments:
-            DSRC_CODE = Data source code
-            RECORD_ID = Record identifier
-            JSON_DATA = Senzing mapped JSON representation of a record"""
-
-        self.g2_engine.replaceRecord(
-            kwargs["parsed_args"].dataSourceCode,
-            kwargs["parsed_args"].recordID,
-            kwargs["parsed_args"].jsonData,
-        )
-        self.printResponse("Record replaced.", "success")
-
-    @cmd_decorator()
-    def do_replaceRecordWithInfo(self, **kwargs):
-        """
-        Replace a record with returned info
-
-        Syntax:
-            replaceRecordWithInfo DSRC_CODE RECORD_ID JSON_DATA [-f FLAG ...]
-
-        Example:
-            replaceRecordWithInfo test 1 '{"NAME_FULL":"Robert Smith", "DATE_OF_BIRTH":"7/4/1976", "PHONE_NUMBER":"787-767-2088"}'
-
-        Arguments:
-            DSRC_CODE = Data source code
-            RECORD_ID = Record identifier
-            JSON_DATA = Senzing mapped JSON representation of a record
-            FLAG = Space separated list of engine flag(s) to determine output (don't specify for defaults)
-
-        Notes:
-            - Engine flag details https://docs.senzing.com/flags/index.html"""
-
-        self.g2_engine.replaceRecordWithInfo(
-            kwargs["parsed_args"].dataSourceCode,
-            kwargs["parsed_args"].recordID,
-            kwargs["parsed_args"].jsonData,
-            kwargs["response"],
-            **kwargs["flags_int"],
-        )
-        self.printResponse(kwargs["response"])
-
-    @cmd_decorator()
     def do_deleteRecord(self, **kwargs):
         """
         Delete a record
@@ -2765,17 +2696,6 @@ class G2CmdShell(cmd.Cmd, object):
         self.g2_engine.getActiveConfigID(kwargs["response"])
         self.printResponse(kwargs["response"], "success")
 
-    @cmd_decorator(cmd_has_args=False)
-    def do_getRepositoryLastModifiedTime(self, **kwargs):
-        """
-        Get the last modified time of the database
-
-        Syntax:
-            getRepositoryLastModifiedTime"""
-
-        self.g2_engine.getRepositoryLastModifiedTime(kwargs["response"])
-        self.printResponse(kwargs["response"], "success")
-
     @cmd_decorator()
     def do_exportTokenLibrary(self, **kwargs):
         """
@@ -3346,9 +3266,6 @@ class G2CmdShell(cmd.Cmd, object):
         return self.flags_completes(text, line)
 
     def complete_addRecordWithInfo(self, text, line, begidx, endidx):
-        return self.flags_completes(text, line)
-
-    def complete_replaceRecordWithInfo(self, text, line, begidx, endidx):
         return self.flags_completes(text, line)
 
     def complete_addRecordWithInfoWithReturnedRecordID(
