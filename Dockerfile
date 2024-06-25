@@ -4,8 +4,8 @@ FROM ${BASE_IMAGE}
 ENV REFRESHED_AT=2024-06-24
 
 LABEL Name="senzing/g2command" \
-      Maintainer="support@senzing.com" \
-      Version="2.4.4"
+  Maintainer="support@senzing.com" \
+  Version="2.4.5"
 
 HEALTHCHECK CMD ["/app/healthcheck.sh"]
 
