@@ -1,0 +1,51 @@
+{
+  // Version of the setting file.  Always 0.2
+  "version": "0.2",
+  // language - current active spelling language
+  "language": "en",
+  // words - list of words to be always considered correct
+  "words": [
+      "alnum",
+      "analysing",
+      "begidx",
+      "buildx",
+      "callingcmd",
+      "CCLA",
+      "CODEOWNER",
+      "configmgr",
+      "DOCKERHUB",
+      "DSRC",
+      "Dsrcs",
+      "endidx",
+      "ERRULE",
+      "fileloop",
+      "FORCEPURGE",
+      "ICLA",
+      "LIGHTBLACK",
+      "LIGHTCYAN",
+      "LIGHTGREEN",
+      "LIGHTMAGENTA",
+      "LIGHTRED",
+      "LIGHTWHITE",
+      "LIGHTYELLOW",
+      "myoutput",
+      "nocolour",
+      "orjson",
+      "pydev",
+      "pydevproject",
+      "pylint",
+      "redoer",
+      "rootfs",
+      "Senzing",
+      "senzingapi",
+      "shellcheck",
+      "simplifiable",
+      "stackoverflow",
+      "toplevel",
+      "watchlist",
+      "xclip"
+    ],
+  "ignorePaths": [
+    ".git/**"
+  ]
+}
