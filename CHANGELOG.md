@@ -2,9 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-[markdownlint](https://dlaa.me/markdownlint/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog], [markdownlint],
+and this project adheres to [Semantic Versioning].
 
 ## [2.4.5] - 2024-06-24
 
@@ -25,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New modifier at end of commands to specify if colored JSON is required or not
 - New command to change if colored JSON is required or not for a session
 - New CLI arg to fully disable colored JSON for a session
-- Added the use of orjson module if it's available to increase JSON formatting performance of large response messsages
+- Added the use of orjson module if it's available to increase JSON formatting performance of large response messages
 - Added configuration file to store user preferences for JSON formatting and coloring across sessions
 - Additional help information
 
@@ -81,7 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed in 2.3.0
 
-- exportJSONEntityReport & exportCSVEntityReport, could exhaust memory and abend
+- exportJSONEntityReport & exportCSVEntityReport, could exhaust memory and abed
 - Replacing default config wasn't restarting engines
 - Misc fixes
 
@@ -147,7 +146,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added to 2.0.3
 
-- Migrate Dockerfile from [docker-g2command](https://github.com/senzing-garage/docker-g2command) to this repository
+- Migrate Dockerfile from [docker-g2command] to this repository
 
 ## [2.0.2] - 2022-05-19
 
@@ -310,3 +309,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added to 1.0.0
 
 - Shipped with SenzingAPI 1.1.0
+
+[docker-g2command]: https://github.com/senzing-garage/docker-g2command
+[Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
+[markdownlint]: https://dlaa.me/markdownlint/
+[Semantic Versioning]: https://semver.org/spec/v2.0.0.html
